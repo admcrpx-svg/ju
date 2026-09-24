@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>JU.</title>
+<meta name="theme-color" content="#000">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icone-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--ink:#fff;--ink2:#cfcfcf;--ink3:#7c7c7c;--line:#1c1c1c;--gold:#e8c37a}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:15px;line-height:1.45;min-height:100vh;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;background:
+ radial-gradient(60% 40% at 20% 0%,rgba(80,40,160,.55),transparent 60%),
+ radial-gradient(50% 40% at 90% 20%,rgba(200,40,90,.35),transparent 60%),
+ radial-gradient(60% 50% at 50% 100%,rgba(20,80,200,.35),transparent 60%)}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:2;max-width:560px;margin:0 auto;padding:0 14px 40px}
+.disp{font-family:Anton,Impact,sans-serif;font-weight:400;letter-spacing:.01em;text-transform:uppercase;line-height:.92}
+.bebas{font-family:"Bebas Neue",Impact,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.up{letter-spacing:.16em;text-transform:uppercase;font-size:10px;font-weight:800;color:var(--ink3)}
+
+/* ===== cabeçalho ===== */
+.hero{padding:26px 0 8px;text-align:center}
+.hero .data{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink2)}
+.hero h1{font-size:96px;line-height:.85;margin:4px 0 6px;background:linear-gradient(180deg,#fff 40%,#9a9a9a);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .head{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.05);backdrop-filter:blur(8px)}
+.hero .head .up{color:var(--gold)}
+.hero .head .nome{font-family:"Bebas Neue";font-size:22px;letter-spacing:.08em;line-height:1}
+.xp{margin:16px 0 4px;height:8px;border-radius:8px;background:#141414;overflow:hidden;border:1px solid #222}
+.xp i{display:block;height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,#ff2e63,#ff9a2e,#ffe45e,#2ee6a6,#2e9bff,#b02eff);background-size:300% 100%;animation:flow 6s linear infinite;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+@keyframes flow{to{background-position:300% 0}}
+.xpl{display:flex;justify-content:space-between;font-family:"Bebas Neue";font-size:15px;letter-spacing:.08em;color:var(--ink2)}
+.xpl b{color:#fff;font-weight:400}
+
+/* frase */
+.frase{margin:16px 0 14px;padding:16px 16px 14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.frase p{font-family:"Bebas Neue";font-size:26px;line-height:1.02;letter-spacing:.03em}
+.frase small{display:block;margin-top:6px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+
+/* ===== bento ===== */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:150px;gap:10px}
+.card{position:relative;border-radius:18px;cursor:pointer;isolation:isolate;transition:transform .2s}
+/* fundo do card fica preso ao quadrado; a figura pode vazar (efeito de profundidade) */
+.card .bg{position:absolute;inset:0;border-radius:18px;overflow:hidden;z-index:-1;border:1px solid rgba(255,255,255,.12);isolation:isolate;transform:translateZ(0)}
+.card .bg:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.55) 100%)}
+.card .bg .liq{z-index:-1}.card .bg .shine{z-index:0}
+.card:active{transform:scale(.97)}
+.card.w{grid-column:span 6}
+.card.m{grid-column:span 3}
+.card.t{grid-column:span 3;grid-row:span 2}
+.card.s{grid-column:span 2}
+.card.s .big{font-size:22px!important}.card.s .num{font-size:40px}.card.s .num small{font-size:13px}.card.s .k{font-size:10px;letter-spacing:.14em}
+/* figuras (colagem por grade): figura clássica + objeto do contexto dela */
+.fig{position:absolute;z-index:0;pointer-events:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 8px 16px rgba(0,0,0,.45))}
+.card .fig{right:3%;bottom:-2%;height:104%;width:auto}
+.card.t .fig{height:80%;right:2%;bottom:-2%}
+.card.m .fig{height:106%;right:1%;bottom:-3%}
+.card.s .fig{height:92%;right:2%;bottom:-2%}
+.card.c-roti .fig{height:82%;right:4%;bottom:-2%}
+.card.c-aten .fig{height:96%;right:3%;bottom:-3%}
+.card.c-eu .fig{height:104%;right:2%;bottom:-3%}
+.card .in{z-index:1}
+.card .liq{position:absolute;inset:-35%;z-index:-2;filter:blur(22px) saturate(1.45) contrast(1.15);animation:spin 26s linear infinite;will-change:transform}
+/* seda: listras finas que o deslocamento do filtro transforma em dobras (o brilho do tecido) */
+.liq:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(112deg,rgba(255,255,255,0) 0 14px,rgba(255,255,255,.22) 14px 19px,rgba(0,0,0,.22) 19px 27px,rgba(255,255,255,0) 27px 40px);mix-blend-mode:overlay}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card:nth-child(2n) .liq{animation-direction:reverse;animation-duration:31s}
+.card .shine{position:absolute;inset:0;z-index:-1;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.18) 45%,transparent 60%);mix-blend-mode:screen}
+.card .in{position:relative;height:100%;padding:12px 13px;display:flex;flex-direction:column;justify-content:space-between}
+.card .k{font-family:"Bebas Neue";font-size:12px;letter-spacing:.2em;opacity:.85}
+.card .big{font-family:Anton;font-size:44px;line-height:.9;text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,.45)}
+.card .num{font-family:"Bebas Neue";font-size:58px;line-height:.85;letter-spacing:.02em;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+.card .num small{font-size:18px;letter-spacing:.1em;opacity:.8;margin-left:3px}
+.card .sub{font-size:12px;font-weight:700;opacity:.9}
+/* paletas líquidas */
+.c-hoje .liq{background:conic-gradient(from 0deg,#2e6bff,#5ef2ff,#1f2dff,#8a2bff,#2e6bff)}
+.c-trab .liq{background:conic-gradient(from 90deg,#003cff,#00e5ff,#0022aa,#2bd0ff,#003cff)}
+.c-tren .liq{background:conic-gradient(from 45deg,#ff1e1e,#ff8a00,#7a0000,#ff3b3b,#ff1e1e)}
+.c-estu .liq{background:conic-gradient(from 200deg,#ff1fa9,#7b1fff,#ff5ac8,#3a0a8a,#ff1fa9)}
+.c-roti .liq{background:conic-gradient(from 300deg,#00ff9c,#00b7ff,#006b4f,#7dffb0,#00ff9c)}
+.c-aten .liq{background:conic-gradient(from 120deg,#ff7a00,#ffd400,#ff2e00,#ffb347,#ff7a00)}
+.c-eu .liq{background:conic-gradient(from 0deg,#b02eff,#ff2e9a,#ffd36e,#5a2bff,#b02eff)}
+.c-fech .liq{background:conic-gradient(from 60deg,#ffffff,#bdbdbd,#e9e9e9,#8a8a8a,#ffffff)}
+.c-fech{color:#000}
+.c-fech .bg:after{background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(0,0,0,.08))}
+
+/* ===== painéis ===== */
+.painel{display:none;position:fixed;inset:0;z-index:20;background:#000;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.painel.on{display:block;animation:up .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.painel .topo{position:relative;height:210px;overflow:hidden;isolation:isolate}
+.painel .topo .liq{position:absolute;inset:-40%;z-index:-2;filter:blur(30px) saturate(1.45);animation:spin 30s linear infinite}
+.painel .topo:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(0,0,0,.1),#000 100%)}
+.painel .topo .fig{right:-4%;top:6px;height:96%;width:auto}
+.painel[data-g="rotina"] .topo .fig{right:-14%;top:auto;bottom:-4%;height:80%}
+.painel .topo .in{position:relative;z-index:1;height:100%;padding:14px 16px 12px;display:flex;flex-direction:column;justify-content:space-between;max-width:560px;margin:0 auto}
+.volta{display:inline-flex;align-items:center;gap:6px;font-family:"Bebas Neue";font-size:16px;letter-spacing:.14em;padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.2);cursor:pointer;width:max-content}
+.painel h2{font-family:Anton;font-size:56px;line-height:.9;text-transform:uppercase;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+.painel .sub{font-family:"Bebas Neue";font-size:15px;letter-spacing:.18em;opacity:.9}
+.corpo{max-width:560px;margin:0 auto;padding:14px 16px 60px}
+.mundo{position:relative;border-radius:16px;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.14);padding:14px;margin:10px 0;cursor:pointer;transition:transform .2s}
+.mundo:active{transform:scale(.98)}
+.mundo .liq{position:absolute;inset:-30%;z-index:-2;filter:url(#liq) saturate(1.2);animation:spin 30s linear infinite;opacity:.55}
+.mundo:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.35),rgba(0,0,0,.75))}
+.mundo .k{font-family:"Bebas Neue";font-size:12px;letter-spacing:.22em;opacity:.85}
+.mundo h3{font-family:Anton;font-weight:400;font-size:26px;line-height:.95;text-transform:uppercase;margin:4px 0 6px;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.mundo .st{font-size:12.5px;color:var(--ink2)}
+.mundo .go{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:"Bebas Neue";font-size:22px;opacity:.8}
+.tr-nums{display:flex;gap:18px;margin:4px 0 12px}
+.tr-nums b{font-family:"Bebas Neue";font-size:28px;letter-spacing:.04em;font-weight:400;color:var(--gold)}
+.tr-nums small{display:block;font-size:10px;letter-spacing:.16em;color:var(--ink3)}
+.fio{font-size:13.5px;color:var(--ink2);padding:10px 12px;border-left:2px solid var(--gold);margin:8px 0 14px;background:rgba(255,255,255,.03);border-radius:0 10px 10px 0}
+.sess{border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;margin:8px 0;background:rgba(255,255,255,.03)}
+.sess .k{font-family:"Bebas Neue";font-size:12px;letter-spacing:.22em;color:var(--gold)}
+.sess .tr{font-size:13px;color:var(--ink2);margin:4px 0 6px}
+.resumo p{font-size:14px;color:var(--ink);margin:6px 0;line-height:1.5}
+.sess ul{margin:6px 0 10px;padding-left:16px;font-size:13px;color:var(--ink2)}
+.sess li{margin:4px 0}
+.gloss{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px}
+.gloss b{color:var(--ink)}.gloss span{color:var(--ink2);flex:1}.gloss i{font-style:normal;color:var(--ink3);font-family:"Bebas Neue";letter-spacing:.1em;font-size:12px}
+.prox{margin:14px 0;padding:12px 14px;border-radius:12px;background:linear-gradient(135deg,rgba(255,31,169,.14),rgba(123,31,255,.08));border:1px solid rgba(255,255,255,.1);font-size:13.5px}
+.prox b{font-family:"Bebas Neue";font-size:12px;letter-spacing:.22em;color:var(--gold);display:block;font-weight:400;margin-bottom:4px}
+.neuro{font-size:13.5px;color:var(--ink2);padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);margin-bottom:12px}
+.neuro b{color:var(--gold);font-weight:800}
+
+/* faixas (tarefas estilo line-up) */
+.faixa{position:relative;display:flex;align-items:center;gap:12px;margin:8px 0;padding:0;border-radius:10px;overflow:hidden;cursor:pointer;isolation:zolate;min-height:64px;border:1px solid rgba(255,255,255,.1);transition:transform .15s}
+.faixa:active{transform:scale(.985)}
+.faixa .liq{position:absolute;inset:-120% -20%;z-index:-2;filter:blur(20px) saturate(1.4);opacity:.95}
+.faixa:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(0,0,0,.15),rgba(0,0,0,.55))}
+.faixa .n{flex:0 0 58px;height:64px;display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue";font-size:40px;background:rgba(0,0,0,.55);border-right:1px solid rgba(255,255,255,.15)}
+.faixa .tx{flex:1;padding:10px 6px}
+.faixa .tt{font-family:Anton;font-size:19px;line-height:1;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.faixa .mt{margin-top:5px;display:flex;gap:6px;flex-wrap:wrap;font-family:"Bebas Neue";font-size:12px;letter-spacing:.12em;opacity:.9}
+.faixa .mt span{padding:1px 6px;border-radius:4px;background:rgba(0,0,0,.4)}
+.faixa .ok{flex:0 0 46px;height:64px;display:flex;align-items:center;justify-content:center;font-family:"Bebas Neue";font-size:14px;letter-spacing:.1em;background:rgba(0,0,0,.35);border-left:1px solid rgba(255,255,255,.12)}
+.faixa.feita{filter:saturate(.35) brightness(.7)}
+.faixa.feita .tt{text-decoration:line-through}
+.faixa.feita .ok{background:#fff;color:#000;font-weight:800}
+.f1 .liq{background:conic-gradient(from 20deg,#2e6bff,#5ef2ff,#1f2dff,#2e6bff)}
+.f2 .liq{background:conic-gradient(from 80deg,#ff1e1e,#ff8a00,#7a0000,#ff1e1e)}
+.f3 .liq{background:conic-gradient(from 140deg,#ff1fa9,#7b1fff,#ff5ac8,#ff1fa9)}
+.f4 .liq{background:conic-gradient(from 200deg,#00ff9c,#00b7ff,#006b4f,#00ff9c)}
+.f5 .liq{background:conic-gradient(from 260deg,#ff7a00,#ffd400,#ff2e00,#ff7a00)}
+.f6 .liq{background:conic-gradient(from 320deg,#b02eff,#ff2e9a,#5a2bff,#b02eff)}
+.ganho{display:none;margin:-2px 0 12px;padding:10px 14px;border-radius:0 0 10px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-top:0;font-size:13px;color:var(--ink2)}
+.ganho.on{display:block;animation:up .3s ease}
+.ganho b{display:block;font-family:"Bebas Neue";font-size:13px;letter-spacing:.2em;color:var(--gold);font-weight:400;margin-bottom:2px}
+
+/* contadores */
+.cont{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.cont .num{font-family:"Bebas Neue";font-size:54px;line-height:.9;min-width:96px}
+.cont .num small{font-size:20px;color:var(--ink3);letter-spacing:.06em}
+.cont .desc{flex:1;font-size:13px;color:var(--ink2)}
+.cont .desc small{display:block;color:var(--ink3)}
+.btn{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#fff;padding:11px 16px;border-radius:12px;font-family:"Bebas Neue";font-size:18px;letter-spacing:.1em;cursor:pointer;transition:.15s}
+.btn:active{transform:scale(.96)}
+.btn.p{background:#fff;color:#000;border-color:#fff}
+.btn.g{background:linear-gradient(90deg,#ff2e63,#ff9a2e);border:0;color:#000}
+.btn.s{padding:8px 12px;font-size:16px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tagc{display:inline-block;padding:3px 9px;border-radius:6px;background:rgba(255,255,255,.1);font-family:"Bebas Neue";font-size:14px;letter-spacing:.1em;margin-right:6px}
+
+/* timer */
+.timer{text-align:center;padding:16px 0 6px}
+.ring{width:210px;height:210px;margin:0 auto;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .tm{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .tm b{font-family:"Bebas Neue";font-size:64px;line-height:.9;letter-spacing:.04em;font-weight:400}
+.ring .tm span{font-family:"Bebas Neue";font-size:13px;letter-spacing:.2em;color:var(--gold)}
+.blocos{display:flex;gap:6px;justify-content:center;margin:14px 0 6px}
+.blocos i{width:22px;height:10px;border-radius:3px;background:#161616;border:1px solid #2a2a2a}
+.blocos i.f{background:linear-gradient(90deg,#ff1fa9,#7b1fff);border-color:transparent;box-shadow:0 0 12px rgba(255,31,169,.6)}
+
+/* atenção */
+.stat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0}
+.stat div{border-radius:12px;padding:12px 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.stat b{display:block;font-family:"Bebas Neue";font-size:44px;line-height:.9;font-weight:400}
+.stat span{font-family:"Bebas Neue";font-size:12px;letter-spacing:.16em;color:var(--ink3)}
+.lista{font-family:"Bebas Neue";font-size:17px;letter-spacing:.06em;color:var(--ink2);line-height:1.7}
+.lista .d{color:#ffd400}
+
+/* eu */
+.nv{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);opacity:.4}
+.nv.at,.nv.ok{opacity:1}
+.nv .num{font-family:"Bebas Neue";font-size:18px;letter-spacing:.1em;color:var(--gold);min-width:44px;padding-top:6px}
+.nv h3{font-family:Anton;font-size:30px;line-height:.95;text-transform:uppercase}
+.nv.at h3{background:linear-gradient(90deg,#ff2e63,#ffd36e,#2ee6a6,#2e9bff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nv p{font-size:13.5px;color:var(--ink2);margin-top:4px}
+.nv .bio{font-size:12px;color:var(--ink3);margin-top:5px}
+.nv.at .aqui{display:inline-block;margin-top:6px;font-family:"Bebas Neue";font-size:12px;letter-spacing:.2em;color:#000;background:var(--gold);padding:2px 8px;border-radius:4px}
+.evid{margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+.evid h4{font-family:"Bebas Neue";font-size:14px;letter-spacing:.2em;color:var(--gold);font-weight:400;margin-bottom:6px}
+.evid li{list-style:none;font-size:13.5px;color:var(--ink2);padding:5px 0 5px 16px;position:relative}
+.evid li:before{content:"";position:absolute;left:0;top:12px;width:7px;height:7px;border-radius:50%;background:linear-gradient(90deg,#ff2e63,#ffd36e)}
+
+textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#fff;border-radius:12px;padding:12px;font-family:inherit;font-size:14px;min-height:100px;resize:vertical}
+.vazio{color:var(--ink3);font-size:13px;padding:12px 0}
+.toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);z-index:50;background:#fff;color:#000;padding:10px 18px;border-radius:999px;font-family:"Bebas Neue";font-size:18px;letter-spacing:.1em;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.6)}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.rodape{text-align:center;padding:26px 0 10px;font-family:"Bebas Neue";font-size:12px;letter-spacing:.24em;color:var(--ink3)}
+@media (min-width:480px){.bento{grid-auto-rows:170px}.card .big{font-size:50px}}
+@media (prefers-reduced-motion:reduce){.liq,.xp i{animation:none!important}}
+
+/* formulário / sheet */
+.sheet{display:none;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+.sheet.on{display:flex;align-items:flex-end;justify-content:center}
+.sheet .box{width:100%;max-width:560px;max-height:92vh;overflow-y:auto;background:#0d0d0d;border:1px solid rgba(255,255,255,.14);border-radius:22px 22px 0 0;padding:16px 16px 28px;animation:up .3s cubic-bezier(.2,.8,.2,1)}
+.sheet h3{font-family:Anton;font-size:34px;text-transform:uppercase;line-height:.95;margin-bottom:10px}
+.fld{margin:10px 0}
+.fld label{display:block;font-family:"Bebas Neue";font-size:13px;letter-spacing:.18em;color:var(--gold);margin-bottom:4px}
+.fld input,.fld select,.fld textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:10px;padding:11px 12px;font-family:Manrope;font-size:15px;color-scheme:dark}
+.fld textarea{min-height:80px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);font-family:"Bebas Neue";font-size:15px;letter-spacing:.1em;cursor:pointer;background:rgba(255,255,255,.04)}
+.chip.on{background:#fff;color:#000;border-color:#fff}
+.novo{display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0 4px;padding:14px;border-radius:12px;border:1px dashed rgba(255,255,255,.3);font-family:"Bebas Neue";font-size:18px;letter-spacing:.14em;cursor:pointer;background:rgba(255,255,255,.03)}
+.novo:active{transform:scale(.98)}
+.passo{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:14px}
+.passo i{flex:0 0 20px;height:20px;border-radius:50%;border:1.5px solid var(--ink3)}
+.passo.ok i{background:#fff;border-color:#fff}
+.passo.ok span{color:var(--ink3);text-decoration:line-through}
+.det dt{font-family:"Bebas Neue";font-size:12px;letter-spacing:.18em;color:var(--gold);margin-top:10px}
+.det dd{font-size:14px;color:var(--ink2)}
+.prazo{margin:12px 0;padding:12px;border-radius:10px;background:rgba(255,255,255,.05);font-size:13px;color:var(--ink2)}
+.prazo b{font-family:"Bebas Neue";font-size:22px;letter-spacing:.06em;color:#fff;display:block}
+.faixa .n{cursor:pointer}
+.faixa .n:active{background:#fff;color:#000}
+.sec{font-family:"Bebas Neue";font-size:14px;letter-spacing:.2em;color:var(--ink3);margin:16px 0 4px}
+.hist{font-size:12.5px;color:var(--ink3);margin-top:6px}
+.hist b{color:var(--ink2);font-weight:600}
+.aviso{margin:10px 0;padding:12px;border-radius:10px;border:1px solid rgba(255,211,110,.4);background:rgba(255,211,110,.08);font-size:13.5px;color:var(--ink2)}
+.aviso b{color:var(--gold)}
+.fechado{margin:14px 0 0;padding:18px 16px;border-radius:16px;text-align:center;position:relative;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.2)}
+.fechado .liq{position:absolute;inset:-40%;z-index:-2;filter:blur(26px) saturate(1.45);animation:spin 20s linear infinite;background:conic-gradient(from 0deg,#ffd36e,#ff2e63,#b02eff,#2ee6a6,#ffd36e)}
+.fechado:after{content:"";position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.45)}
+.fechado h2{font-family:Anton;font-size:44px;line-height:.9;text-transform:uppercase;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.fechado p{font-size:13.5px;margin-top:6px;color:#fff}
+.dia-h{display:flex;align-items:baseline;gap:10px;margin:18px 0 4px}
+.dia-h b{font-family:"Bebas Neue";font-size:30px;letter-spacing:.06em;font-weight:400}
+.dia-h span{font-family:"Bebas Neue";font-size:13px;letter-spacing:.2em;color:var(--ink3)}
+.c-sem .liq{background:conic-gradient(from 180deg,#00e5ff,#2e6bff,#b02eff,#00e5ff)}
+.arrastando{pointer-events:none;opacity:.85;transform:scale(1.02);box-shadow:0 12px 40px rgba(0,0,0,.7);z-index:5;position:relative}
+.faixa{touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.faixa .n{cursor:pointer;position:relative}
+.faixa .n input{width:44px;background:transparent;border:0;color:#fff;font-family:"Bebas Neue";font-size:34px;text-align:center;outline:none;padding:0;cursor:text}
+.faixa .n input:focus{background:rgba(255,255,255,.15);border-radius:6px}
+
+.faixa.feita .n:after{display:none}
+.faixa .n:active{cursor:grabbing}
+.dica-drag{font-family:"Bebas Neue";font-size:12px;letter-spacing:.18em;color:var(--ink3);margin:6px 0 0;text-align:right}
+.alarme{position:relative;margin:8px 0 4px;padding:10px 12px;border-radius:16px;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.28)}
+.alarme .liq{position:absolute;inset:-120% -30%;z-index:-2;filter:blur(18px) saturate(1.45);animation:spin 22s linear infinite;background:conic-gradient(from 0deg,#ff2e63,#ff7a00,#ffd400,#ff2e63)}
+.alarme:after{content:"";position:absolute;inset:0;z-index:-1;background:rgba(0,0,0,.42)}
+.alarme .h{font-family:Anton;font-size:26px;line-height:1;display:inline-block;margin-right:8px;text-shadow:0 2px 14px rgba(0,0,0,.6)}
+.alarme .t{font-family:"Bebas Neue";font-size:17px;letter-spacing:.06em;display:inline-block;vertical-align:2px}
+.alarme .n{font-size:12px;color:#fff;opacity:.9;margin-top:3px;line-height:1.35}
+.alarme .k{display:none}
+.alarme .ct{position:absolute;right:10px;top:10px;font-family:"Bebas Neue";font-size:13px;letter-spacing:.1em;padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.3)}
+.faixa.temhora .n{background:linear-gradient(180deg,rgba(255,46,99,.75),rgba(0,0,0,.6))}
+.faixa{cursor:pointer}
+.faixa .setas{display:flex;flex-direction:column;flex:0 0 34px;height:64px;border-left:1px solid rgba(255,255,255,.12)}
+.faixa .setas button{flex:1;background:rgba(0,0,0,.45);border:0;border-bottom:1px solid rgba(255,255,255,.12);color:#fff;font-size:15px;line-height:1;cursor:pointer;padding:0;font-family:inherit}
+.faixa .setas button:last-child{border-bottom:0}
+.faixa .setas button:active{background:#fff;color:#000}
+.faixa .ok{cursor:pointer}
+.faixa .n button.abrir{position:absolute;inset:0;background:transparent;border:0;cursor:pointer;font-size:0}
+.novaver{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:60;background:linear-gradient(90deg,#ff2e63,#ff9a2e);color:#000;border:0;padding:11px 18px;border-radius:999px;font-family:"Bebas Neue";font-size:17px;letter-spacing:.1em;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.6);display:none}
+.ritmo{margin:6px 0 14px}
+.barras{display:flex;align-items:flex-end;gap:6px;height:90px;margin:10px 0 4px}
+.barras div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.barras i{display:block;width:100%;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#5ef2ff,#2e6bff);min-height:3px}
+.barras b{font-family:"Bebas Neue";font-size:13px;letter-spacing:.06em;color:var(--ink3);font-weight:400}
+.barras span{font-family:"Bebas Neue";font-size:15px;color:#fff}
+.barras div.hoje i{background:linear-gradient(180deg,#ffd36e,#ff7a00)}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.mini div{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px}
+.mini b{display:block;font-family:"Bebas Neue";font-size:26px;line-height:1}
+.mini span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.split{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:8px 0 4px;background:#151515}
+.split i{display:block;height:100%}
+.legenda{display:flex;gap:12px;font-size:12px;color:var(--ink2);flex-wrap:wrap}
+.legenda em{font-style:normal;display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:5px}
+.falhas div{font-size:13px;color:var(--ink2);padding:7px 0;border-bottom:1px solid var(--line)}
+.falhas b{color:#ffb347;font-weight:600}
+.obj{position:relative;margin:8px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
+.obj h4{font-family:Anton;font-size:19px;text-transform:uppercase;line-height:1}
+.obj .cima{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.obj .val{font-family:"Bebas Neue";font-size:30px;line-height:1}
+.obj .val small{font-size:15px;color:var(--ink3)}
+.obj .pb{height:8px;border-radius:6px;background:#141414;overflow:hidden;margin:9px 0 7px;border:1px solid #232323}
+.obj .pb i{display:block;height:100%;background:linear-gradient(90deg,#2e9bff,#5ef2ff);transition:width .5s}
+.obj.bateu .pb i{background:linear-gradient(90deg,#00ff9c,#7dffb0)}
+.obj .baixo{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.obj .info{flex:1;font-size:12px;color:var(--ink3)}
+.obj .bt{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:#fff;border-radius:9px;padding:6px 11px;font-family:"Bebas Neue";font-size:15px;letter-spacing:.08em;cursor:pointer}
+.obj .bt.p{background:#fff;color:#000;border-color:#fff}
+.obj .x{position:absolute;top:8px;right:10px;background:none;border:0;color:var(--ink3);font-size:15px;cursor:pointer}
+.obj .selo{display:inline-block;font-family:"Bebas Neue";font-size:12px;letter-spacing:.12em;padding:2px 8px;border-radius:5px;background:rgba(0,255,156,.18);color:#7dffb0;margin-left:6px}
+.treg{display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}
+.treg .d{font-family:"Bebas Neue";font-size:17px;letter-spacing:.06em;color:var(--gold);min-width:52px}
+.treg .c{flex:1;font-size:14px}
+.treg .c b{font-family:"Bebas Neue";font-size:17px;letter-spacing:.06em;font-weight:400}
+.treg .c span{color:var(--ink3);font-size:12.5px;display:block;margin-top:2px}
+.treg button{background:none;border:0;color:var(--ink3);cursor:pointer;font-size:14px}
+.plano{white-space:pre-wrap;font-size:13.5px;color:var(--ink2);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px;margin:8px 0}
+.cobra{margin:10px 0;padding:14px;border-radius:14px;border:1px solid rgba(255,154,46,.5);background:linear-gradient(90deg,rgba(255,154,46,.16),rgba(255,46,99,.10));animation:pisca 2.4s ease-in-out infinite}
+@keyframes pisca{0%,100%{border-color:rgba(255,154,46,.5)}50%{border-color:rgba(255,154,46,.95)}}
+.cobra b{font-family:"Bebas Neue";font-size:16px;letter-spacing:.14em;color:#ffb347;display:block;margin-bottom:4px}
+.cobra p{font-size:13.5px;color:var(--ink2)}
+.res{position:relative;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);margin:8px 0}
+.res .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.res .qd{font-family:"Bebas Neue";font-size:14px;letter-spacing:.1em;color:var(--gold)}
+.res .tx{font-size:13.5px;color:var(--ink2);margin-top:6px;white-space:pre-wrap}
+.res .pe{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.res .st{cursor:pointer;font-size:15px;letter-spacing:2px;color:var(--ink3)}
+.res .st b{color:#ffd36e;font-weight:400}
+.res .val{font-size:11.5px;color:var(--ink3);flex:1}
+.res button{background:none;border:0;color:var(--ink3);cursor:pointer;font-size:14px}
+.cfg{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:4px 0 10px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><filter id="liq" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.016" numOctaves="2" seed="7" result="t"><animate attributeName="baseFrequency" dur="18s" values="0.004 0.016;0.007 0.010;0.004 0.016" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="t" scale="150" xChannelSelector="R" yChannelSelector="G"/><feGaussianBlur stdDeviation="2.5"/></filter></svg>
+<div class="grain"></div>
+
+<div class="wrap" id="home">
+  <div class="hero">
+    <div class="data" id="data"></div>
+    <h1 class="disp">JU.</h1>
+    <div class="head"><span class="up">nível <span id="nvNum">1</span></span><span class="nome" id="nvNome">Presente</span></div>
+  </div>
+  <div class="xp"><i id="barra"></i></div>
+  <div id="alarmes"></div>
+  <div class="xpl"><span><b id="ptsHoje">0</b> hoje</span><span><b id="ptsTot">0</b> total · faltam <b id="ptsFalta">0</b></span></div>
+
+  <div class="fechado" id="fechado" style="display:none"><div class="liq"></div><h2>Dia fechado</h2><p id="fechadoTxt"></p></div>
+  <div class="frase"><p id="frase"></p><small id="fraseDe"></small></div>
+  <div class="frase" id="notaDia" style="display:none;border-color:rgba(255,211,110,.35)"><small style="margin:0 0 6px">O DIA EM DUAS LINHAS · CLAUDE <span style="color:var(--ink3);letter-spacing:.06em;text-transform:none">(só atualiza na versão com IA)</span></small><p id="notaTxt" style="font-family:Manrope;font-size:14.5px;letter-spacing:0;line-height:1.45;text-transform:none"></p></div>
+  <div class="frase" id="valBox" style="display:none;border-color:rgba(255,31,169,.35)"><small style="margin:0 0 6px">POR QUE ISSO IMPORTA · NAS SUAS PALAVRAS</small><div id="valLista" class="lista" style="font-size:15px;font-family:Manrope;letter-spacing:0;text-transform:none;line-height:1.5"></div></div>
+  <div class="frase" id="ruaBox" style="display:none;border-color:rgba(255,255,255,.25)"><small style="margin:0 0 6px">NA RUA · COM GENTE</small><div id="ruaLista" class="lista" style="font-size:16px"></div></div>
+
+  <div class="bento">
+    <div class="card w c-hoje" onclick="abrir('hoje')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><div class="in"><div class="k">LINE-UP DE HOJE</div><div><div class="big">Hoje</div><div class="sub" id="hojeSub"></div></div></div></div>
+    <div class="card t c-trab" onclick="abrir('trabalho')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><img class="fig" src="fig/trabalho.webp" alt=""><div class="in"><div class="k">RITMO DE TRABALHO</div><div><div class="num" id="ctNumCard">0<small>TAREFAS/7D</small></div><div class="sub" id="tbSub"></div><div class="big" style="font-size:34px">Trabalho</div></div></div></div>
+    <div class="card m c-tren" onclick="abrir('treino')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><img class="fig" src="fig/corpo.webp" alt=""><div class="in"><div class="k">CORPO</div><div><div class="num" id="trSeqCard">0<small>TREINOS</small></div><div class="big" style="font-size:30px">Treino</div><div class="sub" id="trnCardSub"></div></div></div></div>
+    <div class="card m c-estu" onclick="abrir('estudo')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><img class="fig" src="fig/estudo.webp" alt=""><div class="in"><div class="k">FOCO 25/10</div><div><div class="num" id="blCard">0<small>BLOCOS</small></div><div class="big" style="font-size:30px">Estudo</div><div class="sub" id="blSub"></div></div></div></div>
+    <div class="card s c-roti" onclick="abrir('rotina')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><img class="fig" src="fig/rotina.webp" alt=""><div class="in"><div class="k">AMANHÃ</div><div><div class="num" id="amCard">0<small>DIAS</small></div><div class="big" style="font-size:30px">Rotina</div></div></div></div>
+    <div class="card s c-aten" onclick="abrir('atencao')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><img class="fig" src="fig/atencao.webp" alt=""><div class="in"><div class="k">REDES</div><div><div class="num" id="atCard">0<small>MIN</small></div><div class="big" style="font-size:30px">Atenção</div></div></div></div>
+    <div class="card s c-eu" onclick="abrir('eu')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><img class="fig" src="fig/eu.webp" alt=""><div class="in"><div class="k">VIRANDO</div><div><div class="big" style="font-size:30px" id="euCard">Presente</div><div class="sub">níveis</div></div></div></div>
+    <div class="card w c-sem" onclick="abrir('semana')"><div class="bg"><div class="liq"></div><div class="shine"></div></div><div class="in"><div class="k">AMANHÃ E OS PRÓXIMOS 7 DIAS</div><div><div class="big">Semana</div><div class="sub" id="semSub"></div></div></div></div>
+    <div class="card w c-fech" onclick="abrir('fechar')" style="grid-auto-rows:90px;height:90px"><div class="bg"><div class="liq"></div></div><div class="in" style="flex-direction:row;align-items:center"><div class="big" style="font-size:34px">Fechar o dia</div><div class="sub">copiar resumo →</div></div></div>
+  </div>
+  <div class="rodape">ELA MESMA · NEUROCIÊNCIA · DADOS</div>
+</div>
+
+<!-- ===== PAINÉIS ===== -->
+<div class="painel" data-g="hoje"><div class="topo c-hoje"><div class="liq"></div><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Hoje</h2><div class="sub" id="hojeSub2"></div></div></div></div>
+<div class="corpo">
+  <div class="neuro">Cada tarefa fechada é o <b>pinguinho de recompensa</b> que o salário mensal dá pra quem é CLT. Você é a própria empresa: quem paga o pinguinho é você. Toca na faixa. <b>Manhã pesada: celular em outro cômodo.</b></div>
+  <div class="novo" onclick="novaTarefa('trabalho')">+ NOVA TAREFA</div>
+  <div class="dica-drag">▲▼ MUDA A ORDEM · TOQUE DUPLO NO NÚMERO PRA DIGITAR A POSIÇÃO</div>
+  <div id="tarefas"></div>
+  <div class="sec" id="secAmanha"></div><div id="tarefasProx"></div>
+</div></div>
+
+<div class="painel" data-g="trabalho" data-lista="1"><div class="topo c-trab"><div class="liq"></div><img class="fig" src="fig/trabalho.webp" alt=""><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Trabalho</h2><div class="sub">CRP · GF</div></div></div></div>
+<div class="corpo">
+  <div class="ritmo" id="ritmo"></div>
+  
+  <div class="sec">OBJETIVOS</div><div id="obj-trabalho"></div><div class="novo" onclick="novoObjetivo('trabalho')">+ NOVO OBJETIVO</div>
+</div></div>
+
+<div class="painel" data-g="treino" data-lista="1"><div class="topo c-tren"><div class="liq"></div><img class="fig" src="fig/corpo.webp" alt=""><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Treino</h2><div class="sub">CORRIDA · CAMINHADA</div></div></div></div>
+<div class="corpo">
+  <div class="neuro">Exercício é a <b>válvula de escape</b> do estresse crônico, o veneno que corrói motivação sem avisar. Não tem hora, não tem cobrança. Registra o que foi e pronto.</div>
+  <div class="mini"><div><b id="trnTot">0</b><span>treinos no total</span></div><div><b id="trnSem">0</b><span>nos últimos 7 dias</span></div></div>
+  <div class="row"><button class="btn g" onclick="registrarTreino()">REGISTRAR TREINO</button></div>
+  <div class="sec">HISTÓRICO</div>
+  <div id="trHist"></div>
+  <div class="sec">MEU PLANO DE TREINO</div>
+  <div id="planoBox"></div>
+  <div class="row"><button class="btn" onclick="editarPlano()">ESCREVER / COLAR O PLANO</button></div>
+  <div class="sec">OBJETIVOS</div><div id="obj-treino"></div><div class="novo" onclick="novoObjetivo('treino')">+ NOVO OBJETIVO</div>
+</div></div>
+</div></div>
+
+<div class="painel" data-g="estudo" data-lista="1"><div class="topo c-estu"><div class="liq"></div><img class="fig" src="fig/estudo.webp" alt=""><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Estudo</h2><div class="sub">BLOCOS 25/10</div></div></div></div>
+<div class="corpo" id="estudoCorpo">
+  <div class="sec">ESCOLHA O MUNDO</div>
+  <div class="novo" onclick="novoEstudo()">+ NOVO ESTUDO</div>
+  <div id="mundos"></div>
+  <div class="novo" onclick="blocoAvulso()">COMEÇAR BLOCO SEM MUNDO</div>
+  <div class="vazio" id="mundoAtivo"></div>
+  <div class="neuro">A atenção lapsa a cada <b>9 a 11 minutos</b>. Quem está destreinada não estuda 4 horas: estuda 25 e descansa 10. <b>Descanso é louça, roupa no varal, ir até a rua.</b> Não celular: 10 a 15 min sem tela depois do bloco é o que fixa o que você acabou de fazer (meta-análise 2025). Ontem o pico de tiques foi às 18h, na pausa.</div>
+  <div id="cobraResumo"></div>
+  <div id="timerBox">
+  <div class="neuro" style="border-color:rgba(125,211,252,.35)">Esta grade rende muito mais <b>com uma IA junto</b>: você fala o que entendeu, ela devolve o que acertou, o que corrigir e o que faltou, e o resumo fica guardado aqui. Dá pra escrever na mão também, mas aí ninguém confere.</div>
+  <div class="sec">TAMANHO DO BLOCO</div>
+  <div class="cfg" id="cfgBloco"></div>
+  <div class="vazio" style="text-align:center;padding:0 0 8px">foco / descanso · pontos por bloco. Bloco maior vale mais porque custa mais.</div>
+  <div class="timer">
+    <div class="ring"><svg width="210" height="210" viewBox="0 0 210 210"><defs><linearGradient id="gr" x1="0" x2="1"><stop offset="0" stop-color="#ff1fa9"/><stop offset="1" stop-color="#7b1fff"/></linearGradient></defs><circle cx="105" cy="105" r="96" fill="none" stroke="#161616" stroke-width="8"/><circle id="arc" cx="105" cy="105" r="96" fill="none" stroke="url(#gr)" stroke-width="8" stroke-linecap="round" stroke-dasharray="603" stroke-dashoffset="603"/></svg><div class="tm"><b id="tmTxt">25:00</b><span id="tmFase">FOCO</span></div></div>
+    <div class="blocos" id="blocos"></div>
+    <div class="row" style="justify-content:center"><button class="btn p" id="tmBtn" onclick="tmToggle()">COMEÇAR BLOCO</button><button class="btn" onclick="tmReset()">ZERAR</button></div>
+    <div class="vazio" id="tmSub">Nenhum bloco ainda hoje.</div>
+    <div class="row" style="justify-content:center;margin-top:10px"><button class="btn g" id="pausaBtn" onclick="pausaOk()">PAUSA FOI SEM TELA · +5</button></div><div class="vazio" id="pausaSub"></div>
+  </div>
+  <div class="row" style="justify-content:center"><button class="btn g" onclick="novoResumo()">ESCREVER O RESUMO DE HOJE</button></div>
+  <div class="sec" id="resTit">RESUMOS</div>
+  <div id="resumos"></div>
+  </div>
+  <div class="sec">OBJETIVOS</div><div id="obj-estudo"></div><div class="novo" onclick="novoObjetivo('estudo')">+ NOVO OBJETIVO</div>
+</div></div>
+
+<div class="painel" data-g="trilha"><div class="topo c-estu"><div class="liq"></div><img class="fig" src="fig/estudo.webp" alt=""><div class="in"><div class="volta" onclick="abrir('estudo')">← ESTUDO</div><div><h2 id="trH2" style="font-size:40px">Mundo</h2><div class="sub" id="trilhaSub"></div></div></div></div>
+<div class="corpo"><div id="trCorpo"></div><div id="trTimer"></div></div></div>
+
+<div class="painel" data-g="rotina"><div class="topo c-roti"><div class="liq"></div><img class="fig" src="fig/rotina.webp" alt=""><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Rotina</h2><div class="sub">AMANHÃ · CASA · SONO</div></div></div></div>
+<div class="corpo">
+  <div class="neuro">Atleta olímpico tem descanso na agenda. <b>Organizar o amanhã</b> é 1 minuto de áudio pro Claude antes de sair do PC. Ele monta o dia. Você acorda sabendo. E decide <b>onde o celular dorme</b>: na manhã pesada ele fica em outro cômodo. Ter que levantar pra pegar é o intervalo onde cabe o freio (75% de produtividade a mais em quem tem dificuldade de concentrar).</div>
+    <div class="row" style="margin-top:14px"><button class="btn g" onclick="amanha()">ORGANIZEI O AMANHÃ</button></div>
+  <div class="cont" style="border:0"><div class="num"><span id="amSeq">0</span><small>DIAS</small></div><div class="desc">dias seguidos com o amanhã pronto
+  <div class="sec">OBJETIVOS</div><div id="obj-rotina"></div><div class="novo" onclick="novoObjetivo('rotina')">+ NOVO OBJETIVO</div>
+</div></div>
+</div></div>
+
+<div class="painel" data-g="atencao"><div class="topo c-aten"><div class="liq"></div><img class="fig" src="fig/atencao.webp" alt=""><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Atenção</h2><div class="sub">INSTAGRAM · FACEBOOK · TIKTOK</div></div></div></div>
+<div class="corpo">
+  <div class="neuro">No Reels a atenção afunila até a <b>dissociação</b>: 20, 30 minutos morrem e você não lembra o que viu. Aqui é só o dado, lido do seu celular. <b>Uso a trabalho não conta</b>: marca a janela e o app desconta.</div>
+  <div class="stat"><div><b id="atLiq">0</b><span>minutos que contam</span></div><div><b id="atTrab">0</b><span>a trabalho</span></div><div><b id="atN">0</b><span>entradas</span></div></div>
+  <div class="pb" id="atBarra" style="height:10px;border-radius:6px;background:#141414;overflow:hidden;border:1px solid #232323;margin:4px 0 6px"><i style="display:block;height:100%;width:0"></i></div>
+  <div class="vazio" id="atMeta"></div>
+  <div class="row"><button class="btn g" onclick="marcarTrabalho()">MARCAR USO A TRABALHO</button></div>
+  <div id="atJanelas"></div>
+  <div class="sec">ENTRADAS DE HOJE</div>
+  <div class="lista" id="atLista"></div>
+  <div class="sec">OBJETIVOS</div><div id="obj-atencao"></div><div class="novo" onclick="novoObjetivo('atencao')">+ NOVO OBJETIVO</div>
+</div></div>
+  <div class="lista" id="atLista"></div>
+  <div class="neuro" style="margin-top:12px">Dia com <b>90 minutos ou menos</b>, fora o que foi a trabalho, vale 15 pontos. Acima disso, nenhum.</div>
+</div></div>
+
+<div class="painel" data-g="eu"><div class="topo c-eu"><div class="liq"></div><img class="fig" src="fig/eu.webp" alt=""><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Quem eu<br>estou virando</h2><div class="sub">NÍVEIS</div></div></div></div>
+<div class="corpo">
+  <div class="neuro">Nível aqui não é prêmio. É <b>quem você é pras pessoas</b> quando o comportamento vira hábito. Cada nível diz o que mudou no cérebro pra chegar nele.</div>
+  <div id="niveis"></div>
+  <div class="evid"><h4>EVIDÊNCIAS CONTRA A LENTE SUJA</h4><ul id="evid"></ul></div>
+</div></div>
+
+<div class="painel" data-g="semana"><div class="topo c-sem"><div class="liq"></div><div class="in"><div class="volta" onclick="fecharP()">← INÍCIO</div><div><h2>Semana</h2><div class="sub">O QUE VEM</div></div></div></div>
+<div class="corpo">
+  <div class="neuro">Ver o amanhã hoje é o que faz acordar sabendo. As recorrentes já aparecem no dia em que caem. Toca no número pra abrir o que já existe.</div>
+  <div id="semana"></div>
+</div></div>
+<div class="painel" data-g="fechar"><div class="topo c-fech" style="color:#000"><div class="liq"></div><div class="in"><div class="volta" onclick="fecharP()" style="background:rgba(255,255,255,.6);color:#000;border-color:#000">← INÍCIO</div><div><h2>Fechar<br>o dia</h2><div class="sub">REVISÃO ATIVA</div></div></div></div>
+<div class="corpo">
+  <div class="neuro">Puxar da memória sem olhar é o que mais fixa. Uma frase escrita (escrever desacelera mais que falar): o que fez, <b>o que estava no caminho</b> do que não fez, o que aprendeu. Depois copia e manda pro Claude.</div>
+  <textarea id="nota" placeholder="Hoje eu... O que estava no caminho foi..."></textarea>
+  <div class="row"><button class="btn p" onclick="fechar()">COPIAR RESUMO DO DIA</button><button class="btn" onclick="backup()">SALVAR BACKUP</button><label class="btn" style="display:inline-flex;align-items:center">RESTAURAR<input type="file" accept="application/json" style="display:none" onchange="restaurar(this)"></label></div>
+  <pre class="lista" id="resumo" style="white-space:pre-wrap;font-family:Manrope;font-size:13px;letter-spacing:0"></pre>
+</div></div>
+
+<div class="sheet" id="shForm" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3 id="fTitulo">Nova tarefa</h3>
+  <div class="fld"><label>O QUE</label><input id="f_t" placeholder="ex.: ligar pro fornecedor de gesso"></div>
+  <div class="fld"><label>GRADE</label><div class="chips" id="f_grade"></div></div>
+  <div class="fld"><label>ETIQUETA</label><div class="chips" id="f_tag"></div><input id="f_tagx" placeholder="ou digita outra" style="margin-top:6px"></div>
+  <div class="g3">
+    <div class="fld"><label>DATA</label><input id="f_data" type="date"></div>
+    <div class="fld"><label>HORA</label><input id="f_hora" type="time"></div>
+    <div class="fld"><label>DURAÇÃO (MIN)</label><input id="f_dur" type="number" min="0" placeholder="30"></div>
+  </div>
+  <div class="g2">
+    <div class="fld"><label>PRIORIDADE</label><div class="chips" id="f_p"></div></div>
+    <div class="fld"><label>PRAZO ESPERADO (DIAS)</label><input id="f_est" type="number" min="0" placeholder="ex.: 3"></div>
+  </div>
+  <div class="fld"><label>PASSO A PASSO (UM POR LINHA)</label><textarea id="f_passos" placeholder="ler a planta&#10;levantar m²&#10;montar planilha&#10;enviar"></textarea></div>
+  <div class="fld"><label>TIPO</label><div class="chips">
+    <label class="chip" id="f_comp" onclick="this.classList.toggle('on')" style="color:#fff">É COMPROMISSO</label>
+    <label class="chip" id="f_livre" onclick="this.classList.toggle('on')" style="color:#fff">SEM COBRANÇA</label></div>
+    <div class="vazio" style="padding:6px 0">Compromisso = com alguém, hora marcada ou na rua. Sobe pro topo da tela com contagem regressiva e avisa 1 hora antes.</div></div>
+  <div class="row"><button class="btn p" onclick="salvarTarefa()">SALVAR</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shAdiar" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3 id="aTitulo">Adiar pra amanhã</h3>
+  <div id="aNeuro" class="neuro"></div>
+  <div id="aHist"></div>
+  <div class="fld"><label>POR QUE NÃO ACONTECEU HOJE</label><div class="chips" id="a_motivo"></div><input id="a_motivox" placeholder="ou escreve" style="margin-top:6px"></div>
+  <div class="fld"><label>O QUE EU PREPARO HOJE (VIRA TAREFA DE HOJE)</label><input id="a_prep" placeholder="ex.: separar tênis e roupa"></div>
+  <div class="fld"><label>PASSO A PASSO PRA AMANHÃ ACONTECER</label><textarea id="a_passos"></textarea></div>
+  <div class="fld" id="aAlinhaBox" style="display:none"><label>ALINHAMENTO: O QUE MUDA NO PLANO</label><textarea id="a_alinha" placeholder="o plano anterior não bateu com a realidade porque..."></textarea></div>
+  <div class="row"><button class="btn g" onclick="confirmarAdiar()">ADIAR COM PLANO</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shObj" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3>Novo objetivo</h3>
+  <div class="neuro">Meta que você mesma define e vai contando. Ex.: <b>30 contatos por dia</b>, <b>3 treinos por semana</b>, <b>5 blocos de estudo por semana</b>. Bateu, ganha ponto.</div>
+  <div class="fld"><label>NOME</label><input id="o_t" placeholder="ex.: chamar contatos"></div>
+  <div class="g3">
+    <div class="fld"><label>META</label><input id="o_meta" type="number" min="1" value="30"></div>
+    <div class="fld"><label>UNIDADE</label><input id="o_un" placeholder="contatos"></div>
+    <div class="fld"><label>PONTOS AO BATER</label><input id="o_pts" type="number" min="0" value="5"></div>
+  </div>
+  <div class="fld"><label>PERÍODO</label><div class="chips" id="o_per"></div></div>
+  <div class="row"><button class="btn p" onclick="salvarObjetivo()">CRIAR</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shTreino" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3>Registrar treino</h3>
+  <div class="fld"><label>O QUE FOI</label><div class="chips" id="t_tipo"></div><input id="t_tipox" placeholder="ou digita outro" style="margin-top:6px"></div>
+  <div class="g3">
+    <div class="fld"><label>DISTÂNCIA (KM)</label><input id="t_km" inputmode="decimal" placeholder="4,2"></div>
+    <div class="fld"><label>TEMPO (MIN)</label><input id="t_min" type="number" min="0" placeholder="40"></div>
+    <div class="fld"><label>DATA</label><input id="t_data" type="date"></div>
+  </div>
+  <div class="fld"><label>COMO FOI</label><input id="t_obs" placeholder="ex.: 1 km correndo, o resto caminhando"></div>
+  <div class="row"><button class="btn p" onclick="salvarTreino()">SALVAR</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shPlano" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3>Meu plano de treino</h3>
+  <div class="neuro">Cola aqui o treino da academia, a planilha de corrida, o que for. Fica salvo e você consulta na hora.</div>
+  <div class="fld"><textarea id="p_txt" style="min-height:220px" placeholder="Segunda: peito e tríceps&#10;Terça: corrida 20 min&#10;..."></textarea></div>
+  <div class="row"><button class="btn p" onclick="salvarPlano()">SALVAR</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shEstudo" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3>Novo estudo</h3>
+  <div class="neuro">Um mundo por assunto. Pode ser um livro, um curso, uma mentoria ou um tema que você quer dominar (vendas, gestão, o que for).</div>
+  <div class="fld"><label>O QUE VOCÊ VAI ESTUDAR</label><input id="e_t" placeholder="ex.: Vendas · ou o nome do livro"></div>
+  <div class="fld"><label>TIPO</label><div class="chips" id="e_tipo"></div><input id="e_tipox" placeholder="ou digita outro" style="margin-top:6px"></div>
+  <div class="fld"><label>AUTOR, PROFESSOR OU FONTE</label><input id="e_obra" placeholder="ex.: Mario Vargas Llosa · ou mentoria X"></div>
+  <div class="fld"><label>ONDE VOCÊ ESTÁ</label><input id="e_estado" placeholder="ex.: começando do zero · pág. 30"></div>
+  <div class="row"><button class="btn p" onclick="salvarEstudo()">CRIAR MUNDO</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shRede" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3>Uso a trabalho</h3>
+  <div class="neuro">Prospecção, referência pra post, falar com cliente. O que cair nessa janela sai da conta do dia.</div>
+  <div class="g3">
+    <div class="fld"><label>DE</label><input id="r_ini" type="time"></div>
+    <div class="fld"><label>ATÉ</label><input id="r_fim" type="time"></div>
+    <div class="fld"><label>DATA</label><input id="r_data" type="date"></div>
+  </div>
+  <div class="fld"><label>O QUE ERA</label><input id="r_obs" placeholder="ex.: prospecção GF no Instagram"></div>
+  <div class="row"><button class="btn p" onclick="salvarRede()">SALVAR</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shResumo" onclick="if(event.target===this)shFechar()"><div class="box">
+  <h3>Resumo de hoje</h3>
+  <div class="neuro">Sem olhar o material: conta o que você entendeu, como se estivesse explicando pra alguém. <b>Puxar da memória é o que mais fixa</b> (revisão ativa). Errar aqui é ótimo: mostra onde voltar.</div>
+  <div class="fld"><label>MUNDO</label><div class="chips" id="rs_mundo"></div></div>
+  <div class="fld"><textarea id="rs_txt" style="min-height:200px" placeholder="Hoje eu entendi que..."></textarea></div>
+  <div class="fld"><label>IMPORTÂNCIA</label><div class="chips" id="rs_imp"></div>
+    <div class="vazio" id="rs_val" style="padding:6px 0"></div></div>
+  <div class="row"><button class="btn p" onclick="salvarResumo()">SALVAR</button><button class="btn" onclick="shFechar()">CANCELAR</button></div>
+</div></div>
+<div class="sheet" id="shDet" onclick="if(event.target===this)shFechar()"><div class="box" id="detBox"></div></div>
+<button class="novaver" id="novaver" onclick="location.reload()">ATUALIZOU · TOCA PRA VER</button>
+<div class="toast" id="toast"></div>
+
+<script>
+const DADOS = {"versao": "20260924140317", "hoje": "2026-09-24", "nota": "Antes de tudo, de manhã: o criativo do Yellow (depende de token, e o post sai 17:50). Manhã: entregar o orçamento da casa, marcar a consulta na Felicittá, pedir a visita nas 2 obras (isso destrava o orçamento de sexta), o orçamento do corretor, o balancim, alimentar o CT da CRP e chamar os 7 corretores que faltaram (devagar, o WhatsApp bloqueou ontem com 23), alimentar o CT da GF e chamar. Tarde: advogado comigo, mentorias no chat de vendas, as 2 residências quando a construtora responder. Fim do dia, leve: correr, escolher um novo campo de estudo, arrecadação da festa, colagem do Ju.", "historico": {"2026-09-21": {"ct": 70, "blocos": 2, "amanha": true, "tarefasFeitas": 6}, "2026-09-22": {"ct": 35, "cn": 49, "orc": 1, "treino": ["corrida 1 km + caminhada 3,2 km"], "amanha": true, "tarefasFeitas": 8}, "2026-09-23": {"ct": 33, "cn": 10, "gf": 1, "blocos": 3, "amanha": true, "tarefasFeitas": 9}}, "notas": {"2026-09-25": "Com hora: 17:50 Post Yellow. De manhã, na ordem: Entregar os 2 orçamentos das residências, Comercial CRP: 30 contatos. Depois: Correr. Nada pesado depois das 19h.", "2026-09-26": "Com hora: 17:50 Post Yellow. Nada pesado depois das 19h.", "2026-09-27": "Com hora: 17:50 Post Yellow. Nada pesado depois das 19h.", "2026-09-28": "Com hora: 17:50 Post Yellow. De manhã, na ordem: Adicionar contatos novos no CT da CRP, Comercial CRP: 30 contatos. Depois: Correr. Nada pesado depois das 19h.", "2026-09-29": "Com hora: 17:50 Post Yellow. De manhã, na ordem: Adicionar contatos novos no CT da CRP, Comercial CRP: 30 contatos. Depois: Correr. Nada pesado depois das 19h.", "2026-09-30": "Com hora: 17:50 Post Yellow. De manhã, na ordem: Adicionar contatos novos no CT da CRP, Comercial CRP: 30 contatos. Depois: Correr. Nada pesado depois das 19h.", "2026-10-01": "Com hora: 17:50 Post Yellow. De manhã, na ordem: Comercial CRP: 30 contatos. Depois: Correr. Nada pesado depois das 19h."}, "semana": {"2026-09-25": [{"id": "comercial-crp-2026-09-25", "t": "Comercial CRP: 30 contatos", "grade": "trabalho", "tag": "CRP", "p": 1, "ordem": 11, "ganho": "Chamar é fácil, e mesmo assim tem que acontecer todo dia. 30 = +10. 70 = +5. Repetição barata que mantém a máquina girando.", "hora": "manhã", "nota": "Comercial é de manhã. Fim de tarde não funciona.", "data": "2026-09-25", "base": "comercial-crp", "rep": "SEG A SEX"}, {"id": "organizar-amanha-2026-09-25", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-09-25", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "correr-2026-09-25", "t": "Correr", "grade": "treino", "tag": "Corpo", "hora": "fim da tarde", "p": 2, "livre": true, "ordem": 80, "ganho": "Válvula de escape do estresse crônico. Sem cobrança, e mesmo assim você foi.", "data": "2026-09-25", "base": "correr", "rep": "SEG A SEX"}, {"id": "post-yellow-2026-09-25", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-09-25", "base": "post-yellow", "rep": "TODO DIA"}, {"id": "entrega-2residencias-0925", "t": "Entregar os 2 orçamentos das residências", "grade": "trabalho", "tag": "CRP", "data": "2026-09-25", "hora": "manhã", "p": 1, "ordem": 5, "nota": "Prazo final combinado com o cliente. Entregar de manhã.", "ganho": "Prazo dado, prazo cumprido. É o que faz o cliente voltar."}], "2026-09-26": [{"id": "organizar-amanha-2026-09-26", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-09-26", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "post-yellow-2026-09-26", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-09-26", "base": "post-yellow", "rep": "TODO DIA"}], "2026-09-27": [{"id": "organizar-amanha-2026-09-27", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-09-27", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "post-yellow-2026-09-27", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-09-27", "base": "post-yellow", "rep": "TODO DIA"}], "2026-09-28": [{"id": "ct-novos-2026-09-28", "t": "Adicionar contatos novos no CT da CRP", "grade": "trabalho", "tag": "CRP", "hora": "manhã", "p": 1, "ordem": 10, "est": 0, "ganho": "Alimentar o CT é o trabalho difícil que ninguém vê. 5 pontos por contato novo, +25 a cada 10. Normal é 20; 50 é um dia grande. A resistência antes é o mecanismo: dose pequena de desconforto vacina. Se não rolar, o que estava no caminho?", "data": "2026-09-28", "base": "ct-novos", "rep": "SEG·TER·QUA"}, {"id": "comercial-crp-2026-09-28", "t": "Comercial CRP: 30 contatos", "grade": "trabalho", "tag": "CRP", "p": 1, "ordem": 11, "ganho": "Chamar é fácil, e mesmo assim tem que acontecer todo dia. 30 = +10. 70 = +5. Repetição barata que mantém a máquina girando.", "hora": "manhã", "nota": "Comercial é de manhã. Fim de tarde não funciona.", "data": "2026-09-28", "base": "comercial-crp", "rep": "SEG A SEX"}, {"id": "organizar-amanha-2026-09-28", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-09-28", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "correr-2026-09-28", "t": "Correr", "grade": "treino", "tag": "Corpo", "hora": "fim da tarde", "p": 2, "livre": true, "ordem": 80, "ganho": "Válvula de escape do estresse crônico. Sem cobrança, e mesmo assim você foi.", "data": "2026-09-28", "base": "correr", "rep": "SEG A SEX"}, {"id": "post-yellow-2026-09-28", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-09-28", "base": "post-yellow", "rep": "TODO DIA"}], "2026-09-29": [{"id": "ct-novos-2026-09-29", "t": "Adicionar contatos novos no CT da CRP", "grade": "trabalho", "tag": "CRP", "hora": "manhã", "p": 1, "ordem": 10, "est": 0, "ganho": "Alimentar o CT é o trabalho difícil que ninguém vê. 5 pontos por contato novo, +25 a cada 10. Normal é 20; 50 é um dia grande. A resistência antes é o mecanismo: dose pequena de desconforto vacina. Se não rolar, o que estava no caminho?", "data": "2026-09-29", "base": "ct-novos", "rep": "SEG·TER·QUA"}, {"id": "comercial-crp-2026-09-29", "t": "Comercial CRP: 30 contatos", "grade": "trabalho", "tag": "CRP", "p": 1, "ordem": 11, "ganho": "Chamar é fácil, e mesmo assim tem que acontecer todo dia. 30 = +10. 70 = +5. Repetição barata que mantém a máquina girando.", "hora": "manhã", "nota": "Comercial é de manhã. Fim de tarde não funciona.", "data": "2026-09-29", "base": "comercial-crp", "rep": "SEG A SEX"}, {"id": "organizar-amanha-2026-09-29", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-09-29", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "correr-2026-09-29", "t": "Correr", "grade": "treino", "tag": "Corpo", "hora": "fim da tarde", "p": 2, "livre": true, "ordem": 80, "ganho": "Válvula de escape do estresse crônico. Sem cobrança, e mesmo assim você foi.", "data": "2026-09-29", "base": "correr", "rep": "SEG A SEX"}, {"id": "post-yellow-2026-09-29", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-09-29", "base": "post-yellow", "rep": "TODO DIA"}], "2026-09-30": [{"id": "ct-novos-2026-09-30", "t": "Adicionar contatos novos no CT da CRP", "grade": "trabalho", "tag": "CRP", "hora": "manhã", "p": 1, "ordem": 10, "est": 0, "ganho": "Alimentar o CT é o trabalho difícil que ninguém vê. 5 pontos por contato novo, +25 a cada 10. Normal é 20; 50 é um dia grande. A resistência antes é o mecanismo: dose pequena de desconforto vacina. Se não rolar, o que estava no caminho?", "data": "2026-09-30", "base": "ct-novos", "rep": "SEG·TER·QUA"}, {"id": "comercial-crp-2026-09-30", "t": "Comercial CRP: 30 contatos", "grade": "trabalho", "tag": "CRP", "p": 1, "ordem": 11, "ganho": "Chamar é fácil, e mesmo assim tem que acontecer todo dia. 30 = +10. 70 = +5. Repetição barata que mantém a máquina girando.", "hora": "manhã", "nota": "Comercial é de manhã. Fim de tarde não funciona.", "data": "2026-09-30", "base": "comercial-crp", "rep": "SEG A SEX"}, {"id": "organizar-amanha-2026-09-30", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-09-30", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "correr-2026-09-30", "t": "Correr", "grade": "treino", "tag": "Corpo", "hora": "fim da tarde", "p": 2, "livre": true, "ordem": 80, "ganho": "Válvula de escape do estresse crônico. Sem cobrança, e mesmo assim você foi.", "data": "2026-09-30", "base": "correr", "rep": "SEG A SEX"}, {"id": "post-yellow-2026-09-30", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-09-30", "base": "post-yellow", "rep": "TODO DIA"}], "2026-10-01": [{"id": "comercial-crp-2026-10-01", "t": "Comercial CRP: 30 contatos", "grade": "trabalho", "tag": "CRP", "p": 1, "ordem": 11, "ganho": "Chamar é fácil, e mesmo assim tem que acontecer todo dia. 30 = +10. 70 = +5. Repetição barata que mantém a máquina girando.", "hora": "manhã", "nota": "Comercial é de manhã. Fim de tarde não funciona.", "data": "2026-10-01", "base": "comercial-crp", "rep": "SEG A SEX"}, {"id": "organizar-amanha-2026-10-01", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-10-01", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "correr-2026-10-01", "t": "Correr", "grade": "treino", "tag": "Corpo", "hora": "fim da tarde", "p": 2, "livre": true, "ordem": 80, "ganho": "Válvula de escape do estresse crônico. Sem cobrança, e mesmo assim você foi.", "data": "2026-10-01", "base": "correr", "rep": "SEG A SEX"}, {"id": "post-yellow-2026-10-01", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-10-01", "base": "post-yellow", "rep": "TODO DIA"}]}, "tarefas": [{"id": "harrison-0924", "t": "Harrison vem em casa: ensinar Claude (Street)", "tag": "Pessoal", "p": 1, "hora": "19:30", "dur": "90", "ordem": 70, "nota": "Estar pronta antes das 18:30: casa, roupa, o que vai mostrar.", "passos": ["18:30: parar o que estiver fazendo", "separar 2 exemplos pra mostrar (CT e Ju)", "receber"], "ganho": "Ensinar puxando da memória é a revisão ativa mais forte que existe."}, {"id": "wander-carteira-0924", "t": "Conversar com o Wander sobre a carteira de trabalho (dar baixa)", "tag": "CRP", "p": 1, "hora": "manhã", "deadline": "2026-09-24", "ordem": 12, "nota": "Não pode passar de quarta.", "passos": ["mandar mensagem pro Wander marcando", "ter os dados da carteira em mãos", "dar baixa"], "ganho": "Pendência que pesa some. Menos cortisol de fundo."}, {"id": "comercial-crp-2026-09-24", "t": "Comercial CRP: 30 contatos", "grade": "trabalho", "tag": "CRP", "p": 1, "ordem": 11, "ganho": "Chamar é fácil, e mesmo assim tem que acontecer todo dia. 30 = +10. 70 = +5. Repetição barata que mantém a máquina girando.", "hora": "manhã", "nota": "Comercial é de manhã. Fim de tarde não funciona.", "data": "2026-09-24", "base": "comercial-crp", "rep": "SEG A SEX"}, {"id": "organizar-amanha-2026-09-24", "t": "Organizar o amanhã (1 min de áudio) + onde o celular dorme", "grade": "rotina", "tag": "Rotina", "hora": "antes de sair do PC", "p": 1, "ordem": 90, "ganho": "Amanhã já existe na sua cabeça. Você acorda sabendo. E o celular já tem lugar: longe da manhã pesada.", "passos": ["1 min de áudio pro Claude com o dia de amanhã", "decidir onde o celular fica na manhã pesada (outro cômodo)", "tênis, roupa, arquivo, telefone: o que baixa o custo de amanhã"], "data": "2026-09-24", "base": "organizar-amanha", "rep": "TODO DIA"}, {"id": "correr-2026-09-24", "t": "Correr", "grade": "treino", "tag": "Corpo", "hora": "fim da tarde", "p": 2, "livre": true, "ordem": 80, "ganho": "Válvula de escape do estresse crônico. Sem cobrança, e mesmo assim você foi.", "data": "2026-09-24", "base": "correr", "rep": "SEG A SEX"}, {"id": "post-yellow-2026-09-24", "t": "Post Yellow", "grade": "trabalho", "tag": "GF", "hora": "17:50", "p": 2, "ordem": 60, "ganho": "Constância pra um cliente é o que ele paga. Às vezes é só postar; às vezes é criar. Os dois contam.", "data": "2026-09-24", "base": "post-yellow", "rep": "TODO DIA"}], "uso": [{"d": "2026-09-21", "h": "10:31", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "10:34", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "10:34", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:14", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:14", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:28", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:41", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:57", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:57", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "11:58", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:00", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:00", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:02", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:02", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:05", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:15", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:15", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:20", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "12:20", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "12:35", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:35", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:35", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:35", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "12:42", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "13:19", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "13:19", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "14:10", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "14:11", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "14:13", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "14:13", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "15:13", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:13", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:13", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "15:14", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "15:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:41", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:42", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:42", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:43", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "15:43", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "15:43", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "15:44", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "15:44", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:27", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "16:27", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "16:29", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:31", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:32", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:32", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:45", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:45", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:53", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "16:54", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "17:11", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "17:11", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "17:23", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "17:24", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:21", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:21", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:22", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:26", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:27", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:27", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:29", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:29", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:30", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:35", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:37", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:37", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:37", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:38", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:38", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:40", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:40", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:40", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:40", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:45", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:45", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:49", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:49", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:52", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "18:52", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "19:37", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "19:38", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "19:38", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "19:38", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "19:59", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "20:00", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "21:15", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "21:20", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "21:34", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "21:35", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "21:52", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "21:52", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:04", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:06", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:18", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:19", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:32", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:32", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:33", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:33", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:46", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:46", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:47", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:47", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:51", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "22:52", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "22:55", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:57", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "22:59", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "22:59", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "23:16", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "23:16", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "23:19", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "23:20", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-21", "h": "23:21", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "23:21", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "23:26", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-21", "h": "23:26", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-21", "h": "23:59", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-21", "h": "23:59", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:12", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:31", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:42", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:45", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:45", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:47", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:48", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:53", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:53", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:54", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:54", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:55", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:55", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:55", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:56", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "10:58", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:00", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:01", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:02", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:02", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:15", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:15", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:15", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:15", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:15", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:16", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:17", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:18", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:21", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:21", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:23", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:23", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:26", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:28", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:32", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "11:32", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "11:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:41", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:41", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:41", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:42", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:43", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:43", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:44", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:44", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:44", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:45", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:45", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:45", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:46", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:46", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "11:50", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:11", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:25", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:26", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:27", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:27", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:29", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:39", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "12:41", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "12:45", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:48", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:50", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "12:53", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:16", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "13:16", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "13:25", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:27", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:28", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:29", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:58", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:59", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:59", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:59", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:59", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:59", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "13:59", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:00", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:06", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:07", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:08", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:08", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:08", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:08", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:09", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:10", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:11", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:11", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:12", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:12", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:12", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:13", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:13", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:14", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:14", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:14", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:15", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:15", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:16", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:16", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:17", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:44", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:44", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:44", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:46", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:47", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:47", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:53", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:53", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:53", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:53", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:54", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:54", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:54", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:54", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:54", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:55", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:55", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "14:55", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "16:25", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:25", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:26", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:26", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:28", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "16:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "16:30", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:30", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:40", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:41", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:41", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-22", "h": "16:41", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-22", "h": "20:41", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:42", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:45", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:45", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:46", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:47", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:48", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:53", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:58", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "20:59", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "21:28", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "21:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:00", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:00", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:06", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:08", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:12", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:16", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:48", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "22:48", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-22", "h": "23:27", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-22", "h": "23:28", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:00", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:00", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:00", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:02", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:03", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:10", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:11", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:29", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:30", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:31", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:33", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:34", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:36", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:40", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:40", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:41", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:42", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:42", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:42", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:44", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:50", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:50", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:50", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:51", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:52", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:54", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:58", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "10:59", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:00", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:00", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:00", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:00", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:01", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:01", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:01", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:02", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:04", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:05", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:05", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:10", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:11", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:21", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:35", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:37", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:37", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:37", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:37", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:37", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:38", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:41", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:43", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:44", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:55", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:56", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:56", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:58", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "11:58", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:04", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:04", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:08", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:21", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:21", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:27", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:27", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:29", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:32", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:42", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:42", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "12:46", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-23", "h": "12:47", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-23", "h": "13:07", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-23", "h": "13:07", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-23", "h": "13:11", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:12", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:12", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:14", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:15", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:15", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:16", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:17", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:18", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:20", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "13:21", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-23", "h": "13:21", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-23", "h": "14:07", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "14:07", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "14:10", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "14:20", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "14:25", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "14:25", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "14:26", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "14:26", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:01", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-23", "h": "15:01", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-23", "h": "15:09", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:10", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:10", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:10", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:13", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:13", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:13", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:13", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:13", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:13", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:14", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:14", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:34", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:34", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:36", "a": "ABRIU", "app": "Facebook"}, {"d": "2026-09-23", "h": "15:37", "a": "FECHOU", "app": "Facebook"}, {"d": "2026-09-23", "h": "15:42", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:44", "a": "FECHOU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:46", "a": "ABRIU", "app": "Instagram"}, {"d": "2026-09-23", "h": "15:46", "a": "FECHOU", "app": "Instagram"}], "evidencias": ["Duas empresas de verdade, em áreas diferentes, com cliente pagando.", "Assistiu 1h27 de podcast até o fim e trouxe com plano. Quem só procrastina não faz isso.", "Montou sozinha a medição no celular (MacroDroid + Syncthing) em uma manhã.", "Voltou do almoço e contou do Instagram antes de alguém olhar."], "valores": {"crp": "", "gf": "", "treino": ""}, "estudos": [{"id": "espetaculo", "trilha": "A Civilização do Espetáculo", "area": "CULTURA · FILOSOFIA · LIVRO", "obra": "Mario Vargas Llosa", "estado": "pág. 84 · em leitura", "fio": "Poder ≠ autoridade. 68 não derrubou o poder, derrubou a autoridade. Cada filósofo citado enfraquece a ideia de verdade e valor; sem melhor e pior, decide o que diverte.", "proximo": "Pág. 84. Ao resumir, incluir o exemplo mais forte do trecho, não só a tese: nas duas sessões o que caiu foi a parte que dói (Paul de Man e o Holocausto). Se doeu ler, entra no resumo.", "glossario": [{"p": "frivolização", "s": "deixar tudo raso, só pra distrair", "v": 2, "st": "treino"}, {"p": "iconoclasta", "s": "quem derruba ídolos", "v": 1, "st": "treino"}, {"p": "pós-moderno", "s": "desconfiança de que exista verdade; tudo é versão", "v": 0, "st": "treino"}, {"p": "hipóstase", "s": "tratar ideia abstrata como coisa real", "v": 0, "st": "treino"}, {"p": "axioma", "s": "verdade aceita sem prova, ponto de partida", "v": 0, "st": "treino"}, {"p": "solipsista", "s": "quem acha que só existe ele mesmo; fala sozinho", "v": 0, "st": "treino"}, {"p": "abstruso", "s": "difícil de propósito, obscuro", "v": 0, "st": "treino"}, {"p": "esmiuçar", "s": "virar do avesso, analisar em minúcia", "v": 0, "st": "treino"}, {"p": "ensimesmada", "s": "virada para dentro; leitura solitária", "v": 0, "st": "treino"}], "sessoes": [{"d": "2026-09-21", "trecho": "pág. 75-78: Maio de 68 → o professor virou carcereiro → divisão de classes → Foucault → Derrida e Barthes → o crítico acima do artista", "blocos": 2, "resumo": "Em 68 os estudantes de Paris se revoltaram. A escola era dura demais, aluno não abria a boca, e eles foram pra rua com o lema \"é proibido proibir\". Só que não queriam consertar a escola, queriam derrubar qualquer um que mandasse em qualquer um. Não derrubaram o governo: a direita ganhou a eleição logo depois. O que eles derrubaram foi o respeito pelo professor, pelo mestre, por quem sabe mais.\nE aí tem a pegadinha. Os professores da escola pública acreditaram que eram opressores e pararam de exigir: sem nota, sem reprovação. A escola particular não, porque o pai paga pra ter cobrança. Antes o filho do carpinteiro saía médico da escola pública; depois ficou preso numa escola fraca. Quem queria libertar o pobre quebrou o elevador do pobre.\nPor trás disso tinha filósofos. Foucault dizia que escola, prisão e hospício são a mesma coisa: lugares pra domesticar gente. Derrida dizia que as palavras nem chegam na realidade, só apontam pra outras palavras, então não existe verdade, só versão. E quando ninguém mais pode dizer \"isso é bom, isso é ruim\", o crítico que interpreta vira mais importante que quem faz, tipo o crítico de comida valendo mais que o chef.", "perguntas": ["Por que os estudantes fizeram isso? (o livro não conta)", "Se as palavras não alcançam a realidade, os livros deles também não valeriam nada?", "O que o professor tem a ver com carcereiro e psiquiatra de manicômio?"], "melhorar": ["Separar poder (quem manda pela força) de autoridade (respeito de quem sabe). Foi o que faltou no primeiro resumo.", "\"É proibido proibir\" não é do Foucault: era pichação dos estudantes. Ele deu a base, não o slogan.", "Nomes e datas num papel antes de resumir."]}, {"d": "2026-09-23", "trecho": "pág. 80-84: Sokal e a pegadinha das Imposturas Intelectuais → Himmelfarb e o abismo entre as gerações → a defesa parcial de Foucault → a perda da palavra 'humanidade' → por que desmontar um texto que você diz que não significa nada → Paul de Man e o Holocausto → o escrúpulo de Trilling sobre ensinar literatura", "blocos": 3, "resumo": "Dois professores de física, Sokal e Bricmont, ficaram putos com filósofos famosos que usavam fórmulas de ciência sem entender nada. Não era aplicar a fórmula, era citar a fórmula pra parecer inteligente: Lacan dizendo que o órgão sexual masculino é a raiz de menos um, Irigaray dizendo que E=mc² é uma equação machista. Sokal escreveu um artigo falso, cheio dessas bobagens, e uma revista importante publicou. Aí ele contou que era mentira.\nFuncionava porque quem fala difícil parece que está certo, e ninguém quer admitir que não entendeu.\nDepois vem uma historiadora, Himmelfarb, que escreve sobre um crítico famoso dos anos 50, Lionel Trilling. Ele dava aos alunos os livros mais duros que existem, sobre morte, desespero e o mundo desabando depois da guerra, e chamava isso de abismo. Pediu que olhassem o abismo. Os alunos olharam, anotaram e disseram \"muito interessante\". A universidade pegou uma coisa viva e devolveu um esqueleto. Hoje quase ninguém lê Trilling.\nO caso mais pesado é o de Paul de Man, professor em Yale e amigo do Derrida. Depois que morreu, acharam artigos que ele escreveu na Bélgica ocupada pelos nazistas dizendo que a Europa não perderia nada se os judeus fossem mandados pra longe. Os discípulos dele usaram a desconstrução pra provar que aquilo não queria dizer aquilo. É aí que a teoria mostra o preço: se nenhum texto tem sentido fixo, os documentos do Holocausto também não têm, e some o chão pra condenar alguém.\nVargas Llosa não destrói Foucault: reconhece que ele deu lugar pra falar de sexualidade, prisão e loucura. O que ele não aceita é perder a palavra humanidade.", "perguntas": ["Como eles aplicavam a fórmula? (não era aplicar, era enfeitar)", "O que tem a ver ele ser desconstrucionista com ter escrito aquilo na guerra?", "De que vale tanta gente ensinando o que quer, com a carga pessoal dela, sem nada prático? A gente precisa do cara que estudou.", "Coach é o pós-moderno de hoje? (quase: o coach é o que cresce no vazio que o pós-modernismo deixou)"], "melhorar": ["Você guarda a tese e perde o exemplo. Nas duas sessões caiu a parte que dói. A tese sozinha é opinião; com o exemplo vira argumento.", "Quem releu Trilling foi o Vargas Llosa, não a Himmelfarb.", "Trilling é homem e viveu a cena. Himmelfarb é mulher e contou a cena, 40 anos depois."]}], "pasta": "estudos/civilizacao-do-espetaculo/", "aprendidas": ["sofisma"], "regraGloss": "Palavra entra quando ela pergunta. Sai quando ela usa ou define certa sozinha numa sessão seguinte. Lista não cresce pra sempre: o que ela aprendeu vira só contagem."}], "resumos": [{"id": "r-espetaculo-2026-09-23", "mundo": "espetaculo", "data": "2026-09-23", "imp": 3, "txt": "pág. 80-84: Sokal e a pegadinha das Imposturas Intelectuais → Himmelfarb e o abismo entre as gerações → a defesa parcial de Foucault → a perda da palavra 'humanidade' → por que desmontar um texto que você diz que não significa nada → Paul de Man e o Holocausto → o escrúpulo de Trilling sobre ensinar literatura"}, {"id": "r-espetaculo-2026-09-21", "mundo": "espetaculo", "data": "2026-09-21", "imp": 3, "txt": "pág. 75-78: Maio de 68 → o professor virou carcereiro → divisão de classes → Foucault → Derrida e Barthes → o crítico acima do artista"}], "dia": {"novas": [{"id": "corretores-resto-0924", "t": "Chamar os 7 corretores que faltaram", "grade": "trabalho", "tag": "CRP", "data": "2026-09-24", "hora": "manhã", "p": 1, "ordem": 11, "nota": "Ontem o WhatsApp bloqueou por spam depois de 23. Hoje: manda devagar, com pausa entre eles.", "passos": ["conferir se o WhatsApp voltou", "chamar os 7 com intervalo", "responder quem retornou ontem"], "ganho": "Terminar o que o bloqueio interrompeu. Não foi falta sua."}, {"id": "balancim-0924", "t": "Mensagem pro cara do balancim: renegociar o boleto vencido", "grade": "trabalho", "tag": "CRP", "data": "2026-09-24", "hora": "manhã", "p": 1, "ordem": 13, "nota": "Boleto já venceu. Conversa tranquila, só não deixar passar de hoje.", "passos": ["mandar a mensagem", "propor data ou parcelamento", "confirmar o combinado por escrito"], "ganho": "Resolver cedo tira o peso de fundo do dia inteiro."}, {"id": "entregar-orc-casa-0924", "t": "Entregar o orçamento da casa", "grade": "trabalho", "tag": "CRP", "data": "2026-09-24", "hora": "manhã", "p": 1, "ordem": 7, "nota": "Pronto desde ontem. Só mandar.", "ganho": "Orçamento pronto e não entregue é o mesmo que orçamento não feito."}, {"id": "dentista-marcar-0924", "t": "Marcar a consulta na Felicittá (mandar mensagem)", "grade": "rotina", "tag": "Pessoal", "data": "2026-09-24", "hora": "manhã", "dur": "5", "p": 1, "ordem": 6, "nota": "Panorâmica feita ontem. Agora é só mandar a mensagem e marcar.", "ganho": "Cinco minutos que destravam um tratamento inteiro."}, {"id": "arrecadacao-festa", "t": "Falar com gente pra arrecadar pra festa do Dia das Crianças", "grade": "pessoal", "tag": "Pessoal", "data": "2026-09-24", "hora": "fim do dia", "p": 2, "ordem": 97, "livre": true, "est": 3, "deadline": "2026-09-27", "nota": "Sem pressa, até domingo. Dá pra fazer no sofá, aos poucos.", "passos": ["listar quem pode ajudar", "mandar as mensagens", "anotar quem confirmou"], "ganho": "Isso não é trabalho: é o que o trabalho serve pra permitir."}, {"id": "visita-obra-0924", "t": "Perguntar pra construtora se dá pra visitar as 2 obras", "grade": "trabalho", "tag": "CRP", "data": "2026-09-24", "hora": "manhã", "dur": "10", "p": 1, "ordem": 14, "nota": "Antes de fechar o orçamento das 2 residências. Entrega é sexta de manhã, então pergunta cedo.", "passos": ["mandar a mensagem pedindo a visita", "se puder, combinar dia e hora", "ajustar o prazo do orçamento conforme a resposta"], "ganho": "Orçar com a obra na frente é o que separa chute de proposta. E dá motivo pra estar lá."}, {"id": "colagem-ju-0924", "t": "Colagem nos quadros do Ju (Claude faz)", "grade": "pessoal", "tag": "Pessoal", "data": "2026-09-24", "hora": "fim do dia", "p": 3, "ordem": 96, "livre": true, "adiada": 1, "motivos": [{"d": "23/09", "m": "tarefa besta que não agrega agora; estava cansada"}], "nota": "Figura por nicho, domínio público + duotone. Referência: pôsteres do QP Lounge.", "ganho": "Ferramenta que dá vontade de abrir é ferramenta que se usa."}, {"id": "mentorias-claude-0924", "t": "Jogar as transcrições das mentorias no chat de vendas do Claude", "grade": "trabalho", "tag": "CRP", "data": "2026-09-24", "hora": "tarde", "p": 2, "ordem": 60, "nota": "Chat separado, de vendas e comercial. É pra virar método, não ficar só na cabeça.", "passos": ["separar as mentorias que valem", "jogar as transcrições no chat", "pedir a análise do que serve pra CRP e pra GF"], "ganho": "Mentoria assistida vira abordagem escrita. Foi assim que os 30 corretores responderam."}, {"id": "novo-estudo-0924", "t": "Escolher um novo campo de estudo (além do livro)", "grade": "estudo", "tag": "Estudo", "data": "2026-09-24", "hora": "fim do dia", "p": 3, "ordem": 88, "livre": true, "nota": "Empresarial ou pessoal, tanto faz. Só escolher e abrir a trilha.", "passos": ["listar 3 assuntos que dão vontade", "escolher 1", "abrir a trilha com o Claude"], "ganho": "Segunda trilha aberta: estudo deixa de depender de um livro só."}, {"id": "criativo-yellow-0924", "t": "Fazer o criativo do Yellow", "grade": "trabalho", "tag": "GF", "data": "2026-09-24", "hora": "manhã, antes do almoço", "dur": "60", "p": 1, "ordem": 4, "nota": "Depende de token. Fazer cedo, antes de gastar o Claude no resto. O post sai às 17:50.", "passos": ["definir o tema do post", "fazer a arte", "conferir no formato do feed", "deixar pronto pra postar 17:50"], "ganho": "A entrega do cliente feita quando você ainda tem cabeça e sistema no ar."}], "remover": ["ct-gf-ontem-0924", "6hQ4xh7JCGpfHrFw"], "patch": {"correr-2026-09-24": {"hora": "fim da tarde", "nota": "Ontem doeu, hoje já está melhor. Correr ou caminhar, conta igual."}, "ct-novos-2026-09-24": {"nota": "Ontem não adicionou ninguém (dia de orçamento). Hoje é a primeira coisa depois de responder quem retornou."}, "orc-2residencias-0923": {"data": "2026-09-24", "hora": "depois da resposta da construtora", "ordem": 40, "adiada": 1, "motivos": [{"d": "23/09", "m": "vou pedir visita à obra antes, pra orçar com detalhe"}], "nota": "Só começa depois que a construtora responder sobre a visita. Entrega é sexta de manhã."}, "advogado-avaliar-0922": {"data": "2026-09-24", "hora": "tarde", "ordem": 50, "nota": "Falar comigo sobre o que ele disse e transformar em decisões."}, "post-yellow-2026-09-24": {"nota": "A arte já fica pronta de manhã. Aqui é só postar."}}, "feitas": {"criativo-yellow-0924": "11:30", "dentista-marcar-0924": "11:00", "entregar-orc-casa-0924": "11:15", "orc-corretor-0923": "12:00", "ifood-pesquisa": "12:30"}}, "geradoEm": "14:03"};
+const HOJE = (()=>{const x=new Date();return x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0")})();
+const GERADO = DADOS.hoje;
+if(HOJE!==GERADO){/* virou o dia sem eu gerar: promove a prévia deste dia pra tarefa de verdade */
+  for(const t of (DADOS.semana&&DADOS.semana[HOJE])||[]){if(!DADOS.tarefas.some(x=>x.id===t.id))DADOS.tarefas.push(t)}
+  if(DADOS.notas&&DADOS.notas[HOJE])DADOS.nota=DADOS.notas[HOJE];else DADOS.nota="";
+  DADOS.dia={};
+}
+const FRASES = [
+ ["Motivação não é alegria. É ter um motivo.","Eslen · 06:09"],
+ ["Quanto mais longe a recompensa, menos ela vale pro cérebro. Traz ela pra perto.","Eslen · 25:27"],
+ ["Virar a chave é a parte fácil. O difícil é pegar a chave.","Eslen · 82:08"],
+ ["Descanso é atividade. Atleta sem descanso na agenda se lesiona.","Eslen · 70:01"],
+ ["Você loga com nome de usuária. Centenas de pessoas trabalham pra te manter lá dentro.","Eslen · 37:40"],
+ ["A atenção lapsa a cada 9 a 11 minutos. Viajar é normal.","Eslen · 42:42"],
+ ["Erro não é prova de nada. É ajuste de rota.","Eslen · 49:49"],
+ ["Olha as evidências que apontam pro lado inverso da crença.","Eslen · 75:06"],
+ ["Se o traço é baixo, você tem mais dificuldade. E não é culpa sua.","Eslen · 79:07"],
+ ["Rosca com 5 kg: da próxima vez fica leve. Disciplina é isso no cérebro.","Eslen · 22:26"],
+ ["As pessoas que você admira te admiram pelo que você constrói.","Eslen · 30:32"],
+ ["Um bloco de 50 minutos descansada vale mais que 5 horas pegando o celular.","Eslen · 37:40"],
+];
+const NIVEIS_DIAS={1:0,2:5,3:20,4:45,5:90,6:150};
+const NIVEIS = [
+ {n:1,pts:0,nome:"Presente",p:"Você apareceu. O comportamento existe, mesmo caro.",bio:"Cérebro: neurônios disparando juntos pela primeira vez (Hebb). Ainda custa tudo."},
+ {n:2,pts:1200,nome:"Constante",p:"Quem convive com você já sabe: ela volta todo dia.",bio:"Cérebro: a repetição aumenta a força das conexões. O custo começa a cair."},
+ {n:3,pts:3500,nome:"Segura",p:"Você entra numa reunião, num orçamento, numa conversa, sem pedir licença.",bio:"Cérebro: autoeficácia. Cada tarefa fechada é evidência que a lente suja não apaga."},
+ {n:4,pts:9000,nome:"Referência",p:"As pessoas te procuram pelo que você constrói, não pela festa.",bio:"Cérebro: o aprendizado migrou da área da recompensa pra área do hábito. Disciplina de verdade."},
+ {n:5,pts:18000,nome:"Dona do tempo",p:"Você decide onde a atenção vai. Reels, cliente, mãe, treino: escolha sua.",bio:"Cérebro: atenção recalibrada. Menos dissociação, mais alerta. Sono e cortisol no lugar."},
+ {n:6,pts:32000,nome:"JU.",p:"Como você se veste, como chega, como fala: coerente com o que constrói. Imagem sem esforço.",bio:"Cérebro: valores, motivação e disciplina na mesma linha. O carrinho anda reto sozinho."},
+];
+const PTS={tarefa:10,resumo:10,pausa:5,dia5:15,dia10:35,orc:25,gf:5,treino:20,bloco:5,pausa:3,amanha:15,atencaoDia:15,atencaoSemMergulho:10};
+
+const K="ju.estado";
+let E=JSON.parse(localStorage.getItem(K)||"null")||{dias:{},tarefas:[]};
+E.tarefas=E.tarefas||[];E.adiamentos=E.adiamentos||{};E.ordens=E.ordens||{};E.objetivos=E.objetivos||[];E.estudos=E.estudos||[];E.redeTrab=E.redeTrab||{};E.resumos=E.resumos||[];
+for(const r of (DADOS.resumos||[]))if(!E.resumos.some(x=>x.id===r.id))E.resumos.push(Object.assign({fonte:"claude",imp:3},r));
+E.resumos.sort((a,b)=>a.data<b.data?1:-1);E.cfgBloco=E.cfgBloco||{foco:25,pausa:10};
+const VALIDADE={1:10,2:30,3:null};
+/* apaga resumo vencido (só os de importância baixa) */
+E.resumos=E.resumos.filter(r=>{if(r.fonte==='claude')return true;const dias=VALIDADE[r.imp||1];if(!dias)return true;const lim=new Date(r.data+"T12:00");lim.setDate(lim.getDate()+dias);return lim.toISOString().slice(0,10)>=HOJE});
+function todosEstudos(){return [...(DADOS.estudos||[]),...E.estudos]}
+function blocosDoMundo(id){let n=0;const e=todosEstudos().find(x=>x.id===id);if(e)n+=(e.sessoes||[]).reduce((a,x)=>a+(x.blocos||0),0);
+  for(const d of Object.values(E.dias))n+=((d.blocosMundo||{})[id]||0);return n}
+function segunda(d){const x=new Date(d+"T12:00");const w=(x.getDay()+6)%7;x.setDate(x.getDate()-w);return x.toISOString().slice(0,10)}
+function objValor(o,dia){if(o.periodo==="semana"){const s0=segunda(dia);return Object.entries(o.valores||{}).filter(([k])=>segunda(k)===s0).reduce((a,[,v])=>a+v,0)}return (o.valores||{})[dia]||0}
+function objBateu(o,dia){return objValor(o,dia)>=o.meta}
+function objPontos(dia){let p=0;for(const o of E.objetivos){if(o.periodo==="semana"){const s0=segunda(dia);const dias=Object.keys(o.valores||{}).filter(k=>segunda(k)===s0).sort();let acc=0,quando=null;for(const k of dias){acc+=o.valores[k];if(acc>=o.meta){quando=k;break}}if(quando===dia)p+=o.pontos}else if(objBateu(o,dia))p+=o.pontos}return p}
+/* histórico vindo dos arquivos do Claude: sobrevive a trocar de navegador ou endereço */
+for(const[k,v]of Object.entries(DADOS.historico||{})){const d0=E.dias[k]=E.dias[k]||{ct:0,cn:0,orc:0,gf:0,treino:[],blocos:0,amanha:false,nota:"",tarefasFeitas:0};
+  for(const[c,val]of Object.entries(v)){
+    if(c==="treino"){const cur=d0.treino||[];d0.treino=Array.from(new Set([...cur,...val]))}
+    else if(c==="amanha"){d0.amanha=d0.amanha||val}
+    else d0[c]=Math.max(d0[c]||0,val)}}
+E.dias[HOJE]=E.dias[HOJE]||{ct:0,cn:0,orc:0,gf:0,treino:[],blocos:0,amanha:false,nota:""};
+const D=E.dias[HOJE];D.cn=D.cn||0;
+/* valores que o Claude registrou pelo chat (só sobem, nunca descem) */
+if(DADOS.dia&&DADOS.dia.set){for(const[k,v]of Object.entries(DADOS.dia.set))D[k]=v}
+if(DADOS.dia){for(const k of Object.keys(DADOS.dia)){if(["set","remover","removerTexto","feitas","patch","novas"].includes(k))continue;if(typeof D[k]==="number")D[k]=Math.max(D[k],DADOS.dia[k]);else if(typeof D[k]==="boolean")D[k]=D[k]||DADOS.dia[k]}}
+const GRADES={trabalho:"Trabalho",treino:"Treino",estudo:"Estudo",rotina:"Rotina",pessoal:"Pessoal",atencao:"Atenção"};
+const TAGS=["CRP","GF","Casa","Corpo","Estudo","Pessoal","Street"];
+const GANHO={trabalho:"Repetição com recompensa longe. É o comportamento mais caro, e você pagou.",treino:"Cortisol pra baixo, sono melhor, humor amanhã. Benefício intrínseco.",estudo:"Uma caixinha nova aberta. O cérebro se reconfigurou um pouco.",rotina:"Custo do dia seguinte caiu. Você acorda sabendo.",pessoal:"Evidência contra a lente suja. Você fez."};
+const gradeDeTag=t=>({CRP:"trabalho",GF:"trabalho",Corpo:"treino",Rotina:"rotina",Pessoal:"pessoal",Estudo:"estudo"})[t]||"trabalho";
+/* semeia as tarefas do dia (Todoist) uma vez; depois vivem aqui dentro */
+for(const t of DADOS.tarefas){if(!E.tarefas.some(x=>x.id===t.id)){E.tarefas.push({id:t.id,t:t.t,grade:t.grade||gradeDeTag(t.tag),tag:t.tag,data:t.data||HOJE,ordem:E.ordens[t.id]??t.ordem,hora:t.hora||"",dur:t.dur||"",p:t.p||2,est:t.est??"",rep:t.rep||"",base:t.base||"",nota:t.nota||"",passos:(t.passos||[]).map(x=>({t:x,ok:false})),adiada:0,motivos:[],livre:!!t.livre,ganho:t.ganho||"",criada:HOJE,feitaEm:t.feito?HOJE:null,feitaHora:t.feito||""})}}
+/* herança de adiamento: a instância nova da recorrente recebe o plano feito ontem */
+for(const t of E.tarefas){if(t.base&&t.data===HOJE&&E.adiamentos[t.base]){const a=E.adiamentos[t.base];t.passos=a.passos.map(x=>({t:x,ok:false}));t.hora=a.hora||t.hora;t.adiada=a.adiada;t.motivos=a.motivos;t.alinha=a.alinha;delete E.adiamentos[t.base]}}
+/* ajustes que o Claude manda pelo dia-DIA.json */
+if(DADOS.dia&&DADOS.dia.patch){for(const[id,p]of Object.entries(DADOS.dia.patch)){const t=E.tarefas.find(x=>x.id===id);if(!t)continue;for(const[k,v]of Object.entries(p)){if(k==="passos"){const old=t.passos||[];t.passos=v.map(x=>typeof x==="string"?(old.find(o=>o.t===x)||{t:x,ok:false}):x)}else if(k==="passosOk"){(t.passos||[]).forEach(q=>{if(v.includes(q.t))q.ok=true})}else t[k]=v}}}
+if(DADOS.dia&&DADOS.dia.novas){for(const n of DADOS.dia.novas){if(!E.tarefas.some(x=>x.id===n.id))E.tarefas.push(Object.assign({hora:"",dur:"",p:2,est:"",rep:"",base:"",passos:[],adiada:0,motivos:[],criada:HOJE,feitaEm:null,feitaHora:"",ganho:"",livre:false},n,{passos:(n.passos||[]).map(x=>({t:x,ok:false}))}))}}
+if(DADOS.dia&&DADOS.dia.remover)E.tarefas=E.tarefas.filter(t=>!DADOS.dia.remover.includes(t.id));
+if(DADOS.dia&&DADOS.dia.removerTexto)E.tarefas=E.tarefas.filter(t=>!DADOS.dia.removerTexto.some(x=>t.t.toLowerCase().includes(x.toLowerCase())));
+if(DADOS.dia&&DADOS.dia.feitas){for(const[id,h]of Object.entries(DADOS.dia.feitas)){const t=E.tarefas.find(x=>x.id===id);if(t&&!t.feitaEm){t.feitaEm=HOJE;t.feitaHora=h}}}
+/* migração da v1 */
+if(E.dias[HOJE].feitas){for(const id of E.dias[HOJE].feitas){const x=E.tarefas.find(t=>t.id===id);if(x&&!x.feitaEm){x.feitaEm=HOJE}}delete E.dias[HOJE].feitas}
+function save(){localStorage.setItem(K,JSON.stringify(E))}
+function toast(t){const x=document.getElementById("toast");x.textContent=t;x.classList.add("on");clearTimeout(x._t);x._t=setTimeout(()=>x.classList.remove("on"),1900)}
+function hm(h){const[a,b]=h.split(":").map(Number);return a*60+b}
+function atencao(dia){const ev=(DADOS.uso||[]).filter(e=>e.d===dia);let n=0,tot=0,max=0,ab=null,lista=[];
+  for(const e of ev){if(e.a==="ABRIU"){n++;ab=e}else if(ab){const m=Math.max(0,hm(e.h)-hm(ab.h));tot+=m;max=Math.max(max,m);lista.push([ab.h,e.h,m,e.app]);ab=null}}
+  const janelas=(E.redeTrab[dia]||[]);
+  const ehTrab=h=>janelas.some(j=>hm(h)>=hm(j.ini)&&hm(h)<=hm(j.fim));
+  let trab=0,nTrab=0;for(const l of lista)if(ehTrab(l[0])){trab+=l[2];nTrab++}
+  const liq=Math.max(0,tot-trab);
+  return {n,tot,max,lista,trab,nTrab,liq,janelas};}
+function ptsDia(d,dia){d.treino=d.treino||[];d.feitas=undefined;const tf=E.tarefas.filter(t=>t.feitaEm===dia);const nf=Math.max(tf.length,(dia!==HOJE?(d.tarefasFeitas||0):0));let p=nf*PTS.tarefa+(nf>=5?PTS.dia5:0)+(nf>=10?PTS.dia10:0)+tf.reduce((s,t)=>s+(t.passos||[]).filter(x=>x.ok).length*2,0)+d.orc*PTS.orc+d.gf*PTS.gf+(d.treino.length?PTS.treino:0)+(d.blocosPts!=null?d.blocosPts:(d.blocos||0)*PTS.bloco)+(d.pausas||0)*PTS.pausa+(d.amanha?PTS.amanha:0);p+=objPontos(dia);if(E.resumos.some(r=>r.data===dia))p+=PTS.resumo;const a=atencao(dia);if(a.liq<=90)p+=PTS.atencaoDia;return p}
+function ptsTotal(){return Object.entries(E.dias).reduce((s,[k,d])=>s+ptsDia(d,k),0)}
+function ultimoDia(cond){const k=Object.keys(E.dias).filter(x=>cond(E.dias[x])).sort();return k.length?k[k.length-1]:null}
+function diasSem(cond){const u=ultimoDia(cond);if(!u)return null;return Math.max(0,diasEntre(u,HOJE))}
+function statusSeq(cond,nomes){const n=diasSem(cond);if(n===null)return nomes.nunca;if(n===0)return nomes.hoje;if(n===1)return nomes.um;return nomes.mais.replace("{n}",n)}
+function diasAtivos(){return Object.entries(E.dias).filter(([k,d])=>ptsDia(d,k)>0).length}
+function nivelDe(p){const da=diasAtivos();let n=NIVEIS[0];for(const x of NIVEIS)if(p>=x.pts&&da>=(NIVEIS_DIAS[x.n]||0))n=x;return n}
+function proximo(p){return NIVEIS.find(x=>x.pts>p)}
+const feita=t=>!!t.feitaEm;
+const deHoje=t=>!t.pulada&&(!t.feitaEm&&t.data<=HOJE||t.feitaEm===HOJE);
+const diasEntre=(a,b)=>Math.round((new Date(b+'T12:00')-new Date(a+'T12:00'))/864e5);
+
+function render(){
+  const hoje=ptsDia(D,HOJE),tot=ptsTotal(),nv=nivelDe(tot),px=proximo(tot);
+  $("ptsHoje").textContent=hoje;$("ptsTot").textContent=tot;const da=diasAtivos();const fPts=px?Math.max(0,px.pts-tot):0;const fDias=px?Math.max(0,(NIVEIS_DIAS[px.n]||0)-da):0;
+  $("ptsFalta").textContent=px?(fPts?fPts+" pts":"")+(fPts&&fDias?" e ":"")+(fDias?fDias+" dias":"")||"nada, sobe já":"0";
+  $("nvNum").textContent=nv.n;$("nvNome").textContent=nv.nome;$("euCard").textContent=nv.nome;
+  const base=nv.pts,alvo=px?px.pts:nv.pts+1;const pp=Math.min(1,(tot-base)/(alvo-base));const pd=px?Math.min(1,da/Math.max(1,NIVEIS_DIAS[px.n]||1)):1;
+  $("barra").style.width=Math.min(100,100*Math.min(pp,pd))+"%";
+
+  const ord=(a,b)=>((a.ordem??50)-(b.ordem??50))||(a.p-b.p)||((a.hora||"99")>(b.hora||"99")?1:-1);
+  const ts=E.tarefas.filter(deHoje).sort(ord),nf=ts.filter(feita).length;
+  $("hojeSub").textContent=`${nf} de ${ts.length} fechadas`;$("hojeSub2").textContent=`${nf} DE ${ts.length} FECHADAS`;
+  const tl=$("tarefas");tl.innerHTML="";ts.forEach((t,i)=>tl.appendChild(faixa(t,i)));
+  const px2=E.tarefas.filter(t=>!t.feitaEm&&!t.pulada&&t.data>HOJE).sort((a,b)=>(a.data===b.data?0:(a.data<b.data?-1:1))||ord(a,b));
+  $("secAmanha").textContent=px2.length?"PRÓXIMOS DIAS":"";const pl=$("tarefasProx");pl.innerHTML="";px2.forEach((t,i)=>pl.appendChild(faixa(t,i,true)));
+  for(const g of Object.keys(GRADES)){const el=$("lista-"+g);if(!el)continue;el.innerHTML="";const lt=E.tarefas.filter(t=>t.grade===g&&!t.pulada&&(!t.feitaEm||t.feitaEm===HOJE)).sort((a,b)=>(a.data===b.data?0:(a.data>b.data?1:-1))||ord(a,b));if(!lt.length)el.innerHTML='<div class="vazio">Nada aqui ainda.</div>';lt.forEach((t,i)=>el.appendChild(faixa(t,i,t.data!==HOJE)))}
+
+  const cnTot=Object.values(E.dias).reduce((s,x)=>s+(x.cn||0),0);
+  const stTb=statusSeq(x=>(x.cn||0)>0||(x.ct||0)>0,{nunca:"comercial ainda não começou",hoje:"comercial feito hoje",um:"1 dia sem comercial",mais:"{n} dias sem comercial"});
+  
+  /* ---- ritmo ---- */
+  const N7=["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
+  const feitasDia=k=>{const locais=E.tarefas.filter(t=>t.feitaEm===k).length;const h=((DADOS.historico||{})[k]||{}).tarefasFeitas||0;return Math.max(locais,h)};
+  let barras="",maxb=1,dias7=[];
+  for(let i=6;i>=0;i--){const dd=new Date(HOJE+"T12:00");dd.setDate(dd.getDate()-i);const k=dd.toISOString().slice(0,10);const n=feitasDia(k);maxb=Math.max(maxb,n);dias7.push([k,n,N7[dd.getDay()]])}
+  for(const[k,n,nome]of dias7)barras+=`<div class="${k===HOJE?"hoje":""}"><span>${n||""}</span><i style="height:${Math.round(6+64*n/maxb)}px"></i><b>${nome}</b></div>`;
+  const somaFeitas7=dias7.reduce((s,x)=>s+x[1],0);
+  /* pico de horário */
+  const horas={};for(const t of E.tarefas)if(t.feitaHora)horas[t.feitaHora.slice(0,2)]=(horas[t.feitaHora.slice(0,2)]||0)+1;
+  const pico=Object.entries(horas).sort((a,b)=>b[1]-a[1])[0];
+  /* sequência de dias trabalhando */
+  let seqT=0;for(let i=0;i<60;i++){const dd=new Date(HOJE+"T12:00");dd.setDate(dd.getDate()-i);const k=dd.toISOString().slice(0,10);if(feitasDia(k)>0)seqT++;else if(k!==HOJE)break}
+  /* divisão por frente */
+  const cores={CRP:"#d9a978",GF:"#7dd3fc",Pessoal:"#f0abfc",Estudo:"#a5f3c9",Corpo:"#bbf7d0",Street:"#fde68a"};
+  const porTag={};for(const t of E.tarefas)if(t.feitaEm&&t.feitaEm>=dias7[0][0])porTag[t.tag||"Outros"]=(porTag[t.tag||"Outros"]||0)+1;
+  const somaTag=Object.values(porTag).reduce((a,b)=>a+b,0)||1;
+  const split=Object.entries(porTag).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<i style="width:${100*v/somaTag}%;background:${cores[k]||"#888"}"></i>`).join("");
+  const leg=Object.entries(porTag).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<span><em style="background:${cores[k]||"#888"}"></em>${k} ${Math.round(100*v/somaTag)}%</span>`).join("");
+  /* adiamentos recentes */
+  const adi=E.tarefas.filter(t=>(t.motivos||[]).length).sort((a,b)=>(b.motivos.length-a.motivos.length)).slice(0,4)
+    .map(t=>`<div><b>${t.t}</b> — ${t.motivos[t.motivos.length-1].m} <span style="color:var(--ink3)">(${t.motivos[t.motivos.length-1].d}${t.adiada>1?", "+t.adiada+"×":""})</span></div>`).join("");
+  $("ctNumCard").innerHTML=somaFeitas7+'<small>TAREFAS/7D</small>';$("ritmo").innerHTML=`<div class="sec">ÚLTIMOS 7 DIAS · ${somaFeitas7} TAREFAS</div><div class="barras">${barras}</div>
+    <div class="mini"><div><b>${seqT}</b><span>dias seguidos</span></div><div><b>${pico?pico[0]+"h":"—"}</b><span>hora que você mais fecha</span></div></div>
+    ${somaTag>1?`<div class="sec">ONDE FOI O ESFORÇO</div><div class="split">${split}</div><div class="legenda">${leg}</div>`:""}
+    ${adi?`<div class="sec">O QUE VOCÊ MAIS EMPURROU</div><div class="falhas">${adi}</div>`:""}`;
+  
+  
+
+  const dias=Object.keys(E.dias).sort();let seq=0;for(let i=dias.length-1;i>=0;i--){if(E.dias[dias[i]].treino.length)seq++;else if(dias[i]!==HOJE)break}
+  const trTot=Object.values(E.dias).reduce((s,x)=>s+((x.treino||[]).length),0);
+  const stTr=statusSeq(x=>(x.treino||[]).length>0,{nunca:"nenhum treino ainda",hoje:"treinou hoje",um:"1 dia sem treinar",mais:"{n} dias sem treinar"});
+  $("trnTot").textContent=trTot;$("trSeqCard").innerHTML=trTot+'<small>TREINOS</small>';$("trnCardSub").textContent=stTr;
+  const d7=[];for(let i=0;i<7;i++){const dd=new Date(HOJE+"T12:00");dd.setDate(dd.getDate()-i);d7.push(dd.toISOString().slice(0,10))}
+  $("trnSem").textContent=d7.reduce((s,k)=>s+((E.dias[k]||{}).treino||[]).length,0);
+  const hist=$("trHist");hist.innerHTML="";
+  const chaves=Object.keys(E.dias).filter(k=>((E.dias[k]||{}).treino||[]).length).sort().reverse().slice(0,14);
+  if(!chaves.length)hist.innerHTML='<div class="vazio">Nenhum treino registrado ainda.</div>';
+  for(const k of chaves){(E.dias[k].treino||[]).forEach((r,idx)=>{const o=txtTreino(r);const el=document.createElement("div");el.className="treg";
+    el.innerHTML=`<div class="d">${k.slice(8)}/${k.slice(5,7)}</div><div class="c"><b>${o.t}</b>${o.s?`<span>${o.s}</span>`:""}</div><button title="apagar">✕</button>`;
+    el.querySelector("button").onclick=()=>apagarTreino(k,idx);hist.appendChild(el)})}
+  $("planoBox").innerHTML=E.planoTreino?`<div class="plano">${E.planoTreino.replace(/</g,"&lt;")}</div>`:'<div class="vazio">Sem plano salvo. Cola o seu treino aqui embaixo.</div>';
+
+  const bl=$("blocos");bl.innerHTML="";for(let i=0;i<8;i++){const s=document.createElement("i");if(i<D.blocos)s.className="f";bl.appendChild(s)}
+  const mu=$("mundos");if(mu){mu.innerHTML=todosEstudos().map(e=>{const bl=blocosDoMundo(e.id);return `<div class="mundo" onclick="abrirTrilha('${e.id}')"><div class="liq" style="background:conic-gradient(from 200deg,#ff1fa9,#7b1fff,#ff5ac8,#3a0a8a,#ff1fa9)"></div><div class="k">${e.area}</div><h3>${e.trilha}</h3><div class="st">${e.obra} · ${e.estado} · ${e.sessoes.length} sess${e.sessoes.length===1?"ão":"ões"} · ${bl} blocos</div><div class="go">→</div></div>`}).join("")||'<div class="vazio">Nenhum mundo ainda. Me conta o que você vai estudar e eu crio.</div>';$("mundoAtivo").textContent=E.mundo?`Bloco de hoje marcado em: ${(todosEstudos().find(x=>x.id===E.mundo)||{}).trilha||E.mundo}`:""}
+  const blTot=Object.values(E.dias).reduce((s,x)=>s+(x.blocos||0),0);
+  const stEst=statusSeq(x=>(x.blocos||0)>0,{nunca:"nenhum bloco ainda",hoje:"estudou hoje",um:"1 dia sem estudar",mais:"{n} dias sem estudar"});
+  $("tmSub").textContent=(D.blocos?`${D.blocos} hoje (${E.cfgBloco.foco}/${E.cfgBloco.pausa} · ${ptsBloco(E.cfgBloco.foco)} pts cada) · `:"")+`${blTot} bloco${blTot===1?"":"s"} no total · ${stEst}`;$("blSub").textContent=stEst;D.pausas=D.pausas||0;$("pausaBtn").style.display=D.pausas<D.blocos?"":"none";$("pausaSub").textContent=D.pausas?`${D.pausas} pausa${D.pausas>1?"s":""} sem tela hoje.`:"";$("blCard").innerHTML=blTot+'<small>BLOCOS</small>';
+
+  let am=0;for(let i=dias.length-1;i>=0;i--){if(E.dias[dias[i]].amanha)am++;else if(dias[i]!==HOJE)break}
+  $("amSeq").textContent=am;$("amCard").innerHTML=am+'<small>DIAS</small>';
+
+  const a=atencao(HOJE);$("atN").textContent=a.n;$("atLiq").textContent=a.liq;$("atTrab").textContent=a.trab;$("atCard").innerHTML=a.liq+'<small>MIN</small>';
+  const _b=$("atBarra").querySelector("i");_b.style.width=Math.min(100,100*a.liq/90)+"%";
+  _b.style.background=a.liq<=90?"linear-gradient(90deg,#00ff9c,#7dffb0)":"linear-gradient(90deg,#ff7a00,#ff2e63)";
+  $("atMeta").innerHTML=a.liq<=90?`Dentro do limite: <b style="color:#7dffb0">${a.liq} de 90 min</b> · +${PTS.atencaoDia} pontos`:`Passou do limite: <b style="color:#ff9a2e">${a.liq} min</b> (o limite é 90) · sem pontos hoje`;
+  const jb=$("atJanelas");jb.innerHTML=(a.janelas||[]).length?"":'<div class="vazio">Nenhuma janela de trabalho marcada hoje.</div>';
+  (a.janelas||[]).forEach((j,idx)=>{const el=document.createElement("div");el.className="treg";
+    el.innerHTML=`<div class="d">${j.ini}–${j.fim}</div><div class="c"><b>a trabalho</b>${j.obs?`<span>${j.obs}</span>`:""}</div><button>✕</button>`;
+    el.querySelector("button").onclick=()=>apagarRede(HOJE,idx);jb.appendChild(el)});
+  $("atLista").innerHTML=a.lista.length?a.lista.map(l=>{const t=(a.janelas||[]).some(j=>hm(l[0])>=hm(j.ini)&&hm(l[0])<=hm(j.fim));return `<div style="${t?"opacity:.45":""}"><span class="d">${l[0]}</span> → ${l[1]} · ${l[2]} MIN · ${l[3]}${t?" · TRABALHO":""}</div>`}).join(""):`<div class="vazio">Nenhuma entrada hoje (dados até ${DADOS.geradoEm}).</div>`;
+
+  const nl=$("niveis");nl.innerHTML="";for(const x of NIVEIS){const d=document.createElement("div");d.className="nv"+(x.n===nv.n?" at":x.pts<tot?" ok":"");d.innerHTML=`<div class="num">${x.pts>=1000?(x.pts/1000)+"K":x.pts}<br><span style="opacity:.7;font-size:10px">${NIVEIS_DIAS[x.n]||0} DIAS</span></div><div><h3>${x.nome}</h3><p>${x.p}</p><div class="bio">${x.bio}</div>${x.n===nv.n?'<span class="aqui">VOCÊ ESTÁ AQUI</span>':""}</div>`;nl.appendChild(d)}
+  const ev=$("evid");ev.innerHTML="";const evs=[...(DADOS.evidencias||[])];
+  const tf=E.tarefas.filter(t=>t.feitaEm).length;if(tf)evs.push(`${tf} tarefa${tf>1?"s":""} fechada${tf>1?"s":""} aqui dentro, com a sua mão.`);
+  const tc=Object.values(E.dias).reduce((s,d)=>s+d.ct,0);if(tc)evs.push(`${tc} contatos comerciais feitos. Ninguém procrastinando faz isso.`);const tn=Object.values(E.dias).reduce((s,d)=>s+(d.cn||0),0);if(tn)evs.push(`${tn} contatos novos garimpados e postos no CT.`);
+  const tt=Object.values(E.dias).reduce((s,d)=>s+d.treino.length,0);if(tt)evs.push(`${tt} treino${tt>1?"s":""} sem ninguém mandando.`);
+  for(const e of evs){const li=document.createElement("li");li.textContent=e;ev.appendChild(li)}
+  /* dia fechado */
+  const abertas=ts.filter(t=>!feita(t)).length;
+  if(ts.length&&!abertas){$("fechado").style.display="block";$("fechadoTxt").textContent=`${ts.length} de ${ts.length}. ${hoje} pontos hoje. Descanso é atividade: agora é a sua.`;if(!D.notif){D.notif=true;notificar("Dia fechado.",`${ts.length} tarefas, ${hoje} pontos. Agora descansa.`)}}else{$("fechado").style.display="none"}
+  /* semana */
+  const N=["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];const sem=$("semana");sem.innerHTML="";let tot7=0;
+  for(let i=1;i<=7;i++){const dd=new Date(HOJE+"T12:00");dd.setDate(dd.getDate()+i);const k=dd.toISOString().slice(0,10);
+    const mine=E.tarefas.filter(t=>!t.pulada&&!t.feitaEm&&t.data===k);const prev=(DADOS.semana&&DADOS.semana[k]||[]).filter(p=>!mine.some(m=>m.id===p.id));
+    const all=[...mine,...prev].map(t=>Object.assign({},t,{ordem:E.ordens[t.id]??t.ordem})).sort((a,b)=>((a.ordem??50)-(b.ordem??50))||((a.p||2)-(b.p||2)));tot7+=all.length;
+    const h=document.createElement("div");h.className="dia-h";h.innerHTML=`<b>${N[dd.getDay()]} ${k.slice(8)}</b><span>${all.length?all.length+" TAREFAS":"LIVRE"}</span>`;sem.appendChild(h);if(DADOS.notas&&DADOS.notas[k]){const nd=document.createElement("div");nd.className="neuro";nd.style.marginBottom="6px";nd.textContent=DADOS.notas[k];sem.appendChild(nd)}
+    all.forEach((t,j)=>{const isMine=!!t.criada;const f=faixa(Object.assign({passos:[],motivos:[]},t,{criada:t.criada||"previa"}),j,false);if(!isMine){f.querySelector(".faixa").onclick=null;f.querySelector(".ok").textContent=t.rep?"REPETE":"PREVISTA";f.dataset.previa="1"}sem.appendChild(f)})}
+  $("semSub").textContent=tot7+" tarefas nos próximos 7 dias";
+  cfgBlocoUI();
+  const cr=$("cobraResumo");
+  if(cr)cr.innerHTML=precisaResumo()?`<div class="cobra"><b>FALTA O RESUMO DE HOJE</b><p>Você fez ${D.blocos} bloco${D.blocos>1?"s":""} e ainda não contou o que entendeu. Explicar sem olhar é o que fixa. Leva 3 minutos.</p></div>`:"";
+  const rl=$("resumos");const noMundo=mundoAberto&&E.mundo;
+  if($("resTit"))$("resTit").textContent=noMundo?"RESUMOS DESTE MUNDO":"RESUMOS SEM MUNDO (PRA ORGANIZAR)";
+  if(rl){const idsM=todosEstudos().map(e=>e.id);const lista=(noMundo?E.resumos.filter(r=>r.mundo===E.mundo):E.resumos.filter(r=>!idsM.includes(r.mundo))).slice(0,20);rl.innerHTML=lista.length?"":(noMundo?'<div class="vazio">Nenhum resumo neste mundo ainda.</div>':'<div class="vazio">Nenhum resumo solto. Os resumos ficam dentro do mundo em que você estudou.</div>');
+    for(const r of lista){const _e=todosEstudos().find(x=>x.id===r.mundo);const m=_e?_e.trilha:"SEM MUNDO";const d=document.createElement("div");d.className="res";
+      const dias=VALIDADE[r.imp||1];
+      d.innerHTML=`<div class="top"><span class="qd">${r.data.slice(8)}/${r.data.slice(5,7)} · ${m}${r.fonte==="claude"?' <span style="color:#7dd3fc">· FEITO COM IA</span>':""}</span><button title="apagar">✕</button></div>
+        <div class="tx">${r.txt.replace(/</g,"&lt;")}</div>
+        <div class="pe"><span class="st" title="importância">${[1,2,3].map(n=>n<=(r.imp||1)?"<b>★</b>":"★").join("")}</span>
+        <span class="val">${dias?`some em ${dias} dias`:"guardado pra sempre"}</span>${_e?"":'<button class="bt" style="border:1px solid rgba(255,255,255,.25);padding:4px 9px;border-radius:8px;font-family:\'Bebas Neue\';font-size:13px" data-mover="1">ORGANIZAR</button>'}</div>`;
+      d.querySelector("button").onclick=()=>apagarResumo(r.id);
+      d.querySelector(".st").onclick=()=>impResumo(r.id,((r.imp||1)%3)+1);
+      const bm=d.querySelector("[data-mover]");if(bm)bm.onclick=()=>moverResumo(r.id);
+      rl.appendChild(d)}}
+  renderAlarmes();
+  renderObjetivos();
+  $("nota").value=D.nota||"";save();
+}
+function $(i){return document.getElementById(i)}
+function faixa(t,i,mostraData){
+  const ok=feita(t);const w=document.createElement("div");w.className="fw";w.dataset.id=t.id;
+  const f=document.createElement("div");f.className=`faixa f${(i%6)+1}`+(ok?" feita":"")+((t.compromisso||/^\d\d:\d\d$/.test(t.hora||""))?" temhora":"");
+  const dt=mostraData&&t.data?`<span>${t.data.slice(8)}/${t.data.slice(5,7)}</span>`:"";
+  f.innerHTML=`<div class="liq"></div>
+    <div class="n"><input value="${String(i+1).padStart(2,"0")}" inputmode="numeric" readonly title="digita a posição e Enter"><button class="abrir" title="abrir">abrir</button></div>
+    <div class="tx"><div class="tt">${t.t}</div><div class="mt">${dt}${t.hora?`<span>${t.hora}</span>`:""}${t.dur?`<span>${t.dur} MIN</span>`:""}<span>${t.tag||GRADES[t.grade]}</span><span>P${t.p}</span>${t.rep?`<span>${t.rep}</span>`:""}${t.adiada?`<span>ADIADA ${t.adiada}×</span>`:""}${(t.passos||[]).length?`<span>${t.passos.filter(x=>x.ok).length}/${t.passos.length} PASSOS</span>`:""}${t.feitaHora?`<span>FEITA ${t.feitaHora}</span>`:""}</div>${t.nota&&!ok?`<div style="margin-top:6px;font-size:12.5px;color:#ffd36e;font-family:Manrope;text-transform:none">↳ ${t.nota}</div>`:""}</div>
+    <div class="setas"><button class="sobe" title="subir">▲</button><button class="desce" title="descer">▼</button></div>
+    <div class="ok">${ok?"FEITA":"FAZER"}</div>`;
+  const g=document.createElement("div");g.className="ganho"+(ok?" on":"");g.innerHTML=`<b>O QUE MUDOU</b>${t.ganho||GANHO[t.grade]||""}${ok&&t.est!==""&&t.est!=null?prazoTxt(t):""}`;
+  const previa=t.criada==="previa";
+  const inp=f.querySelector("input");
+  f.querySelector(".abrir").onclick=e=>{e.stopPropagation();previa?toast("PRÉVIA: VIRA TAREFA NO DIA"):abrirDet(t.id)};
+  inp.ondblclick=e=>{e.stopPropagation();inp.readOnly=false;inp.focus();inp.select()};
+  inp.onclick=e=>{if(!inp.readOnly)e.stopPropagation()};
+  inp.onkeydown=e=>{e.stopPropagation();if(e.key==="Enter"){e.preventDefault();inp.blur()}if(e.key==="Escape"){inp.value=String(i+1).padStart(2,"0");inp.blur()}};
+  inp.onblur=()=>{if(inp.readOnly)return;inp.readOnly=true;const v=parseInt(inp.value,10);if(!v||v===i+1){render();return}mover(t.id,w.parentElement,v)};
+  f.querySelector(".sobe").onclick=e=>{e.stopPropagation();mover(t.id,w.parentElement,i)};
+  f.querySelector(".desce").onclick=e=>{e.stopPropagation();mover(t.id,w.parentElement,i+2)};
+  f.onclick=()=>{previa?toast("PRÉVIA: VIRA TAREFA NO DIA"):concluir(t.id)};
+  w.appendChild(f);w.appendChild(g);return w;
+}
+function prazoTxt(t){if(t.est===""||t.est==null)return"";const lev=diasEntre(t.criada||t.data,t.feitaEm||HOJE);const d=lev-Number(t.est);return`<div style="margin-top:6px;color:${d<=0?"#7dffb0":"#ffb347"}">${d<=0?"NO PRAZO":"DEMOROU"}: esperava ${t.est} dia(s), levou ${lev}.</div>`}
+function concluir(id){const t=E.tarefas.find(x=>x.id===id);if(!t)return;if(t.feitaEm){t.feitaEm=null;t.feitaHora=""}else{t.feitaEm=HOJE;t.feitaHora=new Date().toTimeString().slice(0,5);toast("+"+PTS.tarefa+" · "+(t.tag||GRADES[t.grade]).toUpperCase())}render();const det=$("shDet");if(det.classList.contains("on"))abrirDet(id)}
+
+/* ----- formulário ----- */
+let fEdit=null,fGrade="trabalho",fTag="CRP",fP=2;
+function chips(id,lista,val,cb){const el=$(id);el.innerHTML="";for(const v of lista){const c=document.createElement("span");c.className="chip"+(v===val?" on":"");c.textContent=typeof v==="number"?"P"+v:(GRADES[v]||v).toUpperCase();c.onclick=()=>{cb(v);chips(id,lista,v,cb)};el.appendChild(c)}}
+const TIPOS_ESTUDO=["livro","curso","mentoria","tema / nicho","filosofia"];
+let eTipo="tema / nicho";
+function novoEstudo(){eTipo="tema / nicho";chips("e_tipo",TIPOS_ESTUDO,eTipo,v=>{eTipo=v;$("e_tipox").value=""});$("e_t").value="";$("e_tipox").value="";$("e_obra").value="";$("e_estado").value="";$("shEstudo").classList.add("on");setTimeout(()=>$("e_t").focus(),80)}
+function salvarEstudo(){const t=$("e_t").value.trim();if(!t){toast("FALTA O NOME");return}
+  const tipo=($("e_tipox").value.trim()||eTipo).toUpperCase();
+  const e={id:"e"+Date.now().toString(36),trilha:t,area:tipo,obra:$("e_obra").value.trim()||"—",estado:$("e_estado").value.trim()||"começando",fio:"",proximo:"Primeiro bloco de 25 min.",glossario:[],sessoes:[]};
+  E.estudos.push(e);E.mundo=e.id;shFechar();render();toast("MUNDO CRIADO")}
+const TIPOS=["corrida","caminhada","academia","bike","outro"];
+let tTipo="corrida";
+function registrarTreino(){tTipo="corrida";chips("t_tipo",TIPOS,tTipo,v=>{tTipo=v;$("t_tipox").value=""});
+  $("t_tipox").value="";$("t_km").value="";$("t_min").value="";$("t_obs").value="";$("t_data").value=HOJE;
+  $("shTreino").classList.add("on")}
+function salvarTreino(){const tipo=$("t_tipox").value.trim()||tTipo;const data=$("t_data").value||HOJE;
+  const r={tipo,km:$("t_km").value.replace(",","."),min:$("t_min").value,obs:$("t_obs").value.trim(),hora:new Date().toTimeString().slice(0,5)};
+  const d0=E.dias[data]=E.dias[data]||{ct:0,cn:0,orc:0,gf:0,treino:[],blocos:0,amanha:false,nota:""};
+  d0.treino=d0.treino||[];d0.treino.push(r);shFechar();render();toast("+"+PTS.treino+" · "+tipo.toUpperCase())}
+function apagarTreino(data,idx){if(!confirm("Apagar esse treino?"))return;E.dias[data].treino.splice(idx,1);render()}
+function editarPlano(){$("p_txt").value=E.planoTreino||"";$("shPlano").classList.add("on");setTimeout(()=>$("p_txt").focus(),80)}
+function salvarPlano(){E.planoTreino=$("p_txt").value;shFechar();render();toast("PLANO SALVO")}
+function txtTreino(r){if(typeof r==="string")return{t:r,s:""};const p=[];if(r.km)p.push(r.km.replace(".",",")+" km");if(r.min)p.push(r.min+" min");
+  return{t:r.tipo+(p.length?" · "+p.join(" · "):""),s:r.obs||""}}
+function marcarTrabalho(){$("r_ini").value="";$("r_fim").value="";$("r_data").value=HOJE;$("r_obs").value="";$("shRede").classList.add("on")}
+function salvarRede(){const ini=$("r_ini").value,fim=$("r_fim").value,data=$("r_data").value||HOJE;
+  if(!ini||!fim){toast("FALTA O HORÁRIO");return}
+  (E.redeTrab[data]=E.redeTrab[data]||[]).push({ini,fim,obs:$("r_obs").value.trim()});shFechar();render();toast("DESCONTADO")}
+function apagarRede(data,i){E.redeTrab[data].splice(i,1);render()}
+const PRESETS=[[25,5],[25,10],[30,10],[50,10],[60,15]];
+function ptsBloco(f){f=Number(f)||25;if(f<=20)return 8;if(f<=25)return 10;if(f<=30)return 20;if(f<=45)return 30;if(f<=55)return 35;return 40}
+function cfgBlocoUI(){const el=$("cfgBloco");if(!el)return;el.innerHTML="";
+  for(const[f,p]of PRESETS){const c=document.createElement("span");c.className="chip"+(E.cfgBloco.foco===f&&E.cfgBloco.pausa===p?" on":"");c.textContent=`${f}/${p} · ${ptsBloco(f)}`;
+    c.onclick=()=>{E.cfgBloco={foco:f,pausa:p};tmReset();save();render()};el.appendChild(c)}
+  const c=document.createElement("span");c.className="chip";c.textContent="OUTRO";
+  c.onclick=()=>{const f=parseInt(prompt("Minutos de foco:",E.cfgBloco.foco),10);if(!f)return;const p=parseInt(prompt("Minutos de descanso:",E.cfgBloco.pausa),10);if(isNaN(p))return;E.cfgBloco={foco:f,pausa:p};tmReset();save();render()};el.appendChild(c)}
+let rsMundo=null,rsImp=1;
+function precisaResumo(){return D.blocos>0&&!E.resumos.some(r=>r.data===HOJE)}
+function novoResumo(){const lista=todosEstudos();const ids=[...lista.map(e=>e.id),"avulso"];rsMundo=E.mundo||"avulso";rsImp=1;
+  chips("rs_mundo",ids,rsMundo,v=>rsMundo=v);
+  document.querySelectorAll("#rs_mundo .chip").forEach((c,i)=>c.textContent=i<lista.length?lista[i].trilha:"SEM MUNDO");
+  chips("rs_imp",[1,2,3],rsImp,v=>{rsImp=v;valTxt()});valTxt();
+  document.querySelectorAll("#rs_imp .chip").forEach((c,i)=>c.textContent=["GUARDAR 10 DIAS","GUARDAR 30 DIAS","GUARDAR SEMPRE"][i]);
+  $("rs_txt").value="";$("shResumo").classList.add("on");setTimeout(()=>$("rs_txt").focus(),80)}
+function valTxt(){const d=VALIDADE[rsImp];$("rs_val").textContent=d?`Some sozinho em ${d} dias (você pode mudar depois).`:"Fica guardado pra sempre."}
+function salvarResumo(){const t=$("rs_txt").value.trim();if(!t){toast("ESCREVE ALGUMA COISA");return}
+  E.resumos.unshift({id:"r"+Date.now().toString(36),mundo:rsMundo,data:HOJE,txt:t,imp:rsImp});
+  shFechar();render();toast("+"+PTS.resumo+" · RESUMO GUARDADO")}
+function moverResumo(id){const lista=todosEstudos();if(!lista.length){toast("CRIA UM MUNDO ANTES");return}
+  const op=lista.map((e,i)=>`${i+1}) ${e.trilha}`).join("\n");const n=parseInt(prompt("Mover pra qual mundo?\n"+op),10);
+  const alvo=lista[n-1];if(!alvo)return;const r=E.resumos.find(x=>x.id===id);if(r){r.mundo=alvo.id;save();render();toast("MOVIDO PRA "+alvo.trilha.toUpperCase())}}
+function impResumo(id,v){const r=E.resumos.find(x=>x.id===id);if(r){r.imp=v;save();render()}}
+function apagarResumo(id){if(!confirm("Apagar esse resumo?"))return;E.resumos=E.resumos.filter(x=>x.id!==id);render();toast("APAGADO")}
+let oPer="dia";
+const OBJ_CFG={
+ trabalho:{titulo:"Novo objetivo de trabalho",dica:"Meta de esforço, não de resultado. Ex.: <b>30 contatos por dia</b>, <b>2 orçamentos por semana</b>.",ph:"chamar contatos",un:"contatos",meta:30,per:"dia"},
+ treino:{titulo:"Nova meta de treino",dica:"O que o corpo precisa por semana. Ex.: <b>3 treinos por semana</b>, <b>15 km por semana</b>.",ph:"treinar",un:"treinos",meta:3,per:"semana"},
+ estudo:{titulo:"Nova meta de estudo",dica:"Estudo se mede em <b>blocos</b> e em <b>resumo</b>, não em horas. Ex.: <b>5 blocos por semana</b>, <b>3 resumos por semana</b>, <b>20 páginas por semana</b>.",ph:"blocos de foco",un:"blocos",meta:5,per:"semana"},
+ rotina:{titulo:"Nova meta de rotina",dica:"Coisa que sustenta o resto. Ex.: <b>5 dias com o amanhã organizado</b>, <b>7 dias dormindo antes da meia-noite</b>.",ph:"organizar o amanhã",un:"dias",meta:5,per:"semana"},
+ atencao:{titulo:"Nova meta de atenção",dica:"Aqui a meta é <b>ficar abaixo</b>. Ex.: <b>5 dias dentro dos 90 minutos</b>.",ph:"dias dentro do limite",un:"dias",meta:5,per:"semana"},
+ pessoal:{titulo:"Novo objetivo",dica:"Uma meta sua, com número e prazo.",ph:"",un:"",meta:5,per:"semana"}};
+function novoObjetivo(g){const c=OBJ_CFG[g]||OBJ_CFG.pessoal;oPer=c.per;
+  document.querySelector("#shObj h3").textContent=c.titulo;
+  document.querySelector("#shObj .neuro").innerHTML=c.dica;
+  $("o_t").placeholder="ex.: "+(c.ph||"sua meta");$("o_un").placeholder=c.un||"unidade";
+  $("o_meta").value=c.meta;$("o_un").value=c.un;$("o_t").value="";$("o_pts").value=5;
+  chips("o_per",["dia","semana"],oPer,v=>oPer=v);$("shObj").dataset.g=g;$("shObj").classList.add("on");setTimeout(()=>$("o_t").focus(),100)}
+function salvarObjetivo(){const t=$("o_t").value.trim();if(!t){toast("FALTA O NOME");return}
+  E.objetivos.push({id:"o"+Date.now().toString(36),t,grade:$("shObj").dataset.g,meta:Math.max(1,parseInt($("o_meta").value,10)||1),unidade:$("o_un").value.trim(),pontos:Math.max(0,parseInt($("o_pts").value,10)||0),periodo:oPer,valores:{}});
+  shFechar();render();toast("OBJETIVO CRIADO")}
+function objMais(id,n){const o=E.objetivos.find(x=>x.id===id);if(!o)return;const antes=objBateu(o,HOJE);o.valores=o.valores||{};o.valores[HOJE]=Math.max(0,(o.valores[HOJE]||0)+n);
+  if(!antes&&objBateu(o,HOJE))toast("+"+o.pontos+" · META BATIDA");render()}
+function objApagar(id){if(!confirm("Apagar esse objetivo?"))return;E.objetivos=E.objetivos.filter(x=>x.id!==id);render();toast("APAGADO")}
+function renderObjetivos(){for(const g of Object.keys(GRADES)){const el=$("obj-"+g);if(!el)continue;const lista=E.objetivos.filter(o=>o.grade===g);
+  el.innerHTML=lista.length?"":'<div class="vazio">Nenhum objetivo aqui. Cria um: uma meta sua, com número e prazo.</div>';
+  for(const o of lista){const v=objValor(o,HOJE),bateu=v>=o.meta;const d=document.createElement("div");d.className="obj"+(bateu?" bateu":"");
+    d.innerHTML=`<button class="x" title="apagar">✕</button><div class="cima"><h4>${o.t}${bateu?'<span class="selo">BATEU</span>':""}</h4><div class="val">${v}<small>/${o.meta}</small></div></div>
+      <div class="pb"><i style="width:${Math.min(100,100*v/o.meta)}%"></i></div>
+      <div class="baixo"><span class="info">${o.unidade?o.unidade+" · ":""}por ${o.periodo} · +${o.pontos} ao bater</span>
+      <button class="bt" data-n="-1">−</button><button class="bt p" data-n="1">+1</button><button class="bt" data-n="5">+5</button><button class="bt" data-n="10">+10</button></div>`;
+    d.querySelector(".x").onclick=()=>objApagar(o.id);
+    d.querySelectorAll(".bt").forEach(b=>b.onclick=()=>objMais(o.id,parseInt(b.dataset.n,10)));
+    el.appendChild(d)}}}
+function novaTarefa(g){fEdit=null;fGrade=g||"trabalho";fTag=g==="treino"?"Corpo":g==="rotina"?"Casa":g==="estudo"?"Estudo":"CRP";fP=2;
+  $("fTitulo").textContent="Nova tarefa";$("f_t").value="";$("f_tagx").value="";$("f_data").value=HOJE;$("f_hora").value="";$("f_dur").value="";$("f_est").value="";$("f_passos").value="";$("f_livre").classList.remove("on");$("f_comp").classList.remove("on");
+  chips("f_grade",Object.keys(GRADES),fGrade,v=>fGrade=v);chips("f_tag",TAGS,fTag,v=>{fTag=v;$("f_tagx").value=""});chips("f_p",[1,2,3],fP,v=>fP=v);
+  $("shForm").classList.add("on");setTimeout(()=>$("f_t").focus(),100)}
+function editarTarefa(id){const t=E.tarefas.find(x=>x.id===id);if(!t)return;novaTarefa(t.grade);fEdit=id;fTag=t.tag;fP=t.p;
+  $("fTitulo").textContent="Editar";$("f_t").value=t.t;$("f_data").value=t.data;$("f_hora").value=t.hora||"";$("f_dur").value=t.dur||"";$("f_est").value=t.est??"";$("f_passos").value=(t.passos||[]).map(p=>p.t).join("\n");if(t.livre)$("f_livre").classList.add("on");if(t.compromisso)$("f_comp").classList.add("on");
+  chips("f_grade",Object.keys(GRADES),t.grade,v=>fGrade=v);chips("f_tag",TAGS,TAGS.includes(t.tag)?t.tag:null,v=>{fTag=v;$("f_tagx").value=""});if(!TAGS.includes(t.tag))$("f_tagx").value=t.tag;chips("f_p",[1,2,3],t.p,v=>fP=v);$("shDet").classList.remove("on")}
+function salvarTarefa(){const tt=$("f_t").value.trim();if(!tt){toast("FALTA O QUE");return}
+  const tag=$("f_tagx").value.trim()||fTag;const linhas=$("f_passos").value.split("\n").map(x=>x.trim()).filter(Boolean);
+  const base=fEdit?E.tarefas.find(x=>x.id===fEdit):{id:"t"+Date.now().toString(36),criada:HOJE,feitaEm:null,feitaHora:"",ganho:""};
+  const antigos=base.passos||[];
+  Object.assign(base,{t:tt,grade:fGrade,tag,data:$("f_data").value||HOJE,hora:$("f_hora").value,dur:$("f_dur").value,p:fP,est:$("f_est").value,livre:$("f_livre").classList.contains("on"),compromisso:$("f_comp").classList.contains("on"),passos:linhas.map(l=>({t:l,ok:!!antigos.find(a=>a.t===l&&a.ok)}))});
+  if(!fEdit)E.tarefas.push(base);shFechar();render();toast(fEdit?"SALVA":"CRIADA · "+GRADES[fGrade].toUpperCase())}
+function shFechar(){document.querySelectorAll(".sheet").forEach(x=>x.classList.remove("on"))}
+function abrirDet(id){const t=E.tarefas.find(x=>x.id===id);if(!t)return;const b=$("detBox");
+  const lev=diasEntre(t.criada||t.data,t.feitaEm||HOJE);
+  b.innerHTML=`<h3>${t.t}</h3><dl class="det">
+   <dt>GRADE · ETIQUETA</dt><dd>${GRADES[t.grade]} · ${t.tag||"-"}</dd>
+   <dt>QUANDO</dt><dd>${t.data.slice(8)}/${t.data.slice(5,7)}${t.hora?" às "+t.hora:""}${t.dur?" · "+t.dur+" min":""} · P${t.p}${t.livre?" · sem cobrança":""}</dd>${t.rep?`<dt>REPETE</dt><dd>${t.rep}</dd>`:""}${t.nota?`<dt>LEMBRETE</dt><dd style="color:#ffd36e">${t.nota}</dd>`:""}${t.adiada?`<dt>ADIADA ${t.adiada}×</dt><dd class="hist">${(t.motivos||[]).map(m=>`<div><b>${m.d}</b> · ${m.m}</div>`).join("")}${t.alinha?`<div style="margin-top:4px"><b>alinhamento:</b> ${t.alinha}</div>`:""}</dd>`:""}
+   ${t.est!==""&&t.est!=null?`<dt>PRAZO</dt><dd>esperado ${t.est} dia(s) · ${t.feitaEm?"levou":"já vai em"} ${lev} dia(s)</dd>`:""}
+  </dl>
+  <div class="sec">PASSO A PASSO</div><div id="detPassos">${(t.passos||[]).length?"":'<div class="vazio">Sem passos. Edita pra adicionar.</div>'}</div>
+  <div class="row" style="margin-top:14px"><button class="btn ${t.feitaEm?"":"g"}" onclick="concluir('${t.id}')">${t.feitaEm?"REABRIR":"CONCLUIR"}</button><button class="btn" onclick="editarTarefa('${t.id}')">EDITAR</button>${t.feitaEm?"":`<button class="btn" onclick="adiar('${t.id}')">ADIAR</button>`}<button class="btn" onclick="excluir('${t.id}')" style="color:#ff6b6b">EXCLUIR</button></div>`;
+  const dp=b.querySelector("#detPassos");(t.passos||[]).forEach((p,i)=>{const d=document.createElement("div");d.className="passo"+(p.ok?" ok":"");d.innerHTML=`<i></i><span>${p.t}</span>`;d.onclick=()=>{p.ok=!p.ok;if(p.ok)toast("+2 · PASSO");save();abrirDet(id);render()};dp.appendChild(d)});
+  $("shDet").classList.add("on")}
+const MOTIVOS=["sem tempo","sem energia","deixei pro fim do dia","dependia de alguém","travei","não era urgente"];
+const SUGEST={treino:["hoje à noite: separar tênis e roupa","amanhã: vestir antes de abrir o PC","sair sem pensar, 20 min já vale"],trabalho:["definir a hora exata de amanhã","separar o que preciso antes (arquivo, telefone, planta)","fazer no primeiro bloco da manhã"],estudo:["escolher o tema antes","1 bloco de 25 min, só isso"],rotina:["fazer junto com algo que já faço"],pessoal:["marcar hora com a pessoa"]};
+let aId=null,aMotivo=null;
+function amanhaDe(d){const x=new Date(d+"T12:00");x.setDate(x.getDate()+1);return x.toISOString().slice(0,10)}
+function adiar(id){const t=E.tarefas.find(x=>x.id===id);if(!t)return;aId=id;aMotivo=null;shFechar();
+  const leve=t.p>=3||t.livre;
+  $("aTitulo").textContent=(leve?"Fica pra amanhã":"Adiar pra amanhã");
+  $("aNeuro").innerHTML=leve?"Sem urgência, sem custo. Só deixa <b>um passo</b> pra amanhã não virar depois de amanhã.":(t.adiada>=1?"Segunda vez. O plano de ontem <b>não bateu com a realidade</b>. Não é falha sua: é o plano que precisa mudar. Lê o que você escreveu e ajusta.":"Adiar não é falha. <b>Adiar sem plano</b> é. O cérebro repete amanhã o que foi barato hoje, então deixa amanhã barato: prepara hoje.");
+  $("aHist").innerHTML=t.adiada?`<div class="aviso"><b>PLANO ANTERIOR</b><br>${(t.passos||[]).map(p=>"· "+p.t).join("<br>")||"(sem passos)"}<br><span class="hist">${(t.motivos||[]).map(m=>m.d+": "+m.m).join(" · ")}</span></div>`:"";
+  chips("a_motivo",MOTIVOS,null,v=>{aMotivo=v;$("a_motivox").value=""});$("a_motivox").value="";$("a_prep").value="";
+  $("a_passos").value=(t.adiada?(t.passos||[]).map(p=>p.t):(SUGEST[t.grade]||[])).join("\n");
+  $("aAlinhaBox").style.display=t.adiada?"block":"none";$("a_alinha").value="";
+  $("shAdiar").classList.add("on")}
+function confirmarAdiar(){const t=E.tarefas.find(x=>x.id===aId);if(!t)return;const m=$("a_motivox").value.trim()||aMotivo||"não disse";
+  const passos=$("a_passos").value.split("\n").map(x=>x.trim()).filter(Boolean);const prep=$("a_prep").value.trim();const ali=$("a_alinha").value.trim();
+  t.motivos=(t.motivos||[]);t.motivos.push({d:HOJE.slice(8)+"/"+HOJE.slice(5,7),m});t.adiada=(t.adiada||0)+1;if(ali)t.alinha=ali;
+  if(t.base){/* recorrente: pula hoje, a instância de amanhã herda o plano */t.pulada=true;E.adiamentos[t.base]={passos,hora:t.hora,adiada:t.adiada,motivos:t.motivos,alinha:t.alinha}}
+  else{t.data=amanhaDe(HOJE);t.passos=passos.map(x=>({t:x,ok:false}))}
+  if(prep){E.tarefas.push({id:"prep"+Date.now().toString(36),t:"Preparar: "+prep,grade:"rotina",tag:"Rotina",data:HOJE,hora:"",dur:"",p:2,est:"",rep:"",base:"",passos:[],adiada:0,motivos:[],criada:HOJE,feitaEm:null,feitaHora:"",ganho:"Você baixou o custo de amanhã hoje. É assim que o comportamento fica barato.",livre:false})}
+  shFechar();render();toast(t.p>=3||t.livre?"FICA PRA AMANHÃ":"ADIADA COM PLANO")}
+function notificar(t,b){try{if(!("Notification"in window))return;if(Notification.permission==="granted")new Notification(t,{body:b});else if(Notification.permission!=="denied")Notification.requestPermission().then(p=>{if(p==="granted")new Notification(t,{body:b})})}catch(e){}}
+function mover(id,cont,pos){if(!cont)return;let ids;
+  if(cont.id==="semana"){const els=[...cont.children];let i=els.findIndex(x=>x.dataset&&x.dataset.id===id);let a=i,b=i;
+    while(a>0&&!els[a-1].classList.contains("dia-h"))a--;while(b<els.length-1&&!els[b+1].classList.contains("dia-h"))b++;
+    ids=els.slice(a,b+1).filter(x=>x.classList.contains("fw")).map(x=>x.dataset.id)}
+  else ids=[...cont.querySelectorAll(".fw")].map(x=>x.dataset.id);const de=ids.indexOf(id);if(de<0)return;const alvo=Math.max(1,Math.min(ids.length,pos));if(alvo===de+1)return;ids.splice(de,1);ids.splice(alvo-1,0,id);
+  let k=0;for(const x of ids){const o=(k+1)*10;k++;const t=E.tarefas.find(y=>y.id===x);if(t)t.ordem=o;E.ordens[x]=o}save();render();toast("POSIÇÃO "+pos)}
+function salvarOrdem(cont){let ids;if(cont.id==="semana"){/* só o bloco do mesmo dia: entre dois .dia-h */const w=cont.querySelector(".arrastando")||null;const els=[...cont.children];let i=els.indexOf(w);if(i<0){ids=[]}else{let a=i,b=i;while(a>0&&!els[a-1].classList.contains("dia-h"))a--;while(b<els.length-1&&!els[b+1].classList.contains("dia-h"))b++;ids=els.slice(a,b+1).filter(x=>x.classList.contains("fw")).map(x=>x.dataset.id)}}else ids=[...cont.querySelectorAll(".fw")].map(x=>x.dataset.id);
+  let k=0;for(const id of ids){const o=(k+1)*10;k++;const t=E.tarefas.find(x=>x.id===id);if(t)t.ordem=o;E.ordens[id]=o}save();render();toast("ORDEM SALVA")}
+function excluir(id){if(!confirm("Excluir essa tarefa?"))return;E.tarefas=E.tarefas.filter(x=>x.id!==id);shFechar();render();toast("EXCLUÍDA")}
+function backup(){save();const a=document.createElement("a");a.href="data:application/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(E,null,1));a.download="ju-estado.json";a.click();toast("BACKUP BAIXADO")}
+function restaurar(inp){const f=inp.files[0];if(!f)return;f.text().then(x=>{try{const j=JSON.parse(x);if(!j.dias)throw 0;E=j;E.tarefas=E.tarefas||[];E.adiamentos=E.adiamentos||{};E.ordens=E.ordens||{};E.objetivos=E.objetivos||[];E.estudos=E.estudos||[];E.redeTrab=E.redeTrab||{};E.resumos=E.resumos||[];
+for(const r of (DADOS.resumos||[]))if(!E.resumos.some(x=>x.id===r.id))E.resumos.push(Object.assign({fonte:"claude",imp:3},r));
+E.resumos.sort((a,b)=>a.data<b.data?1:-1);E.cfgBloco=E.cfgBloco||{foco:25,pausa:10};
+const VALIDADE={1:10,2:30,3:null};
+/* apaga resumo vencido (só os de importância baixa) */
+E.resumos=E.resumos.filter(r=>{if(r.fonte==='claude')return true;const dias=VALIDADE[r.imp||1];if(!dias)return true;const lim=new Date(r.data+"T12:00");lim.setDate(lim.getDate()+dias);return lim.toISOString().slice(0,10)>=HOJE});
+function todosEstudos(){return [...(DADOS.estudos||[]),...E.estudos]}
+function blocosDoMundo(id){let n=0;const e=todosEstudos().find(x=>x.id===id);if(e)n+=(e.sessoes||[]).reduce((a,x)=>a+(x.blocos||0),0);
+  for(const d of Object.values(E.dias))n+=((d.blocosMundo||{})[id]||0);return n}
+function segunda(d){const x=new Date(d+"T12:00");const w=(x.getDay()+6)%7;x.setDate(x.getDate()-w);return x.toISOString().slice(0,10)}
+function objValor(o,dia){if(o.periodo==="semana"){const s0=segunda(dia);return Object.entries(o.valores||{}).filter(([k])=>segunda(k)===s0).reduce((a,[,v])=>a+v,0)}return (o.valores||{})[dia]||0}
+function objBateu(o,dia){return objValor(o,dia)>=o.meta}
+function objPontos(dia){let p=0;for(const o of E.objetivos){if(o.periodo==="semana"){const s0=segunda(dia);const dias=Object.keys(o.valores||{}).filter(k=>segunda(k)===s0).sort();let acc=0,quando=null;for(const k of dias){acc+=o.valores[k];if(acc>=o.meta){quando=k;break}}if(quando===dia)p+=o.pontos}else if(objBateu(o,dia))p+=o.pontos}return p}
+/* histórico vindo dos arquivos do Claude: sobrevive a trocar de navegador ou endereço */
+for(const[k,v]of Object.entries(DADOS.historico||{})){const d0=E.dias[k]=E.dias[k]||{ct:0,cn:0,orc:0,gf:0,treino:[],blocos:0,amanha:false,nota:"",tarefasFeitas:0};
+  for(const[c,val]of Object.entries(v)){
+    if(c==="treino"){const cur=d0.treino||[];d0.treino=Array.from(new Set([...cur,...val]))}
+    else if(c==="amanha"){d0.amanha=d0.amanha||val}
+    else d0[c]=Math.max(d0[c]||0,val)}}E.dias[HOJE]=E.dias[HOJE]||{ct:0,orc:0,gf:0,treino:[],blocos:0,amanha:false,nota:""};save();location.reload()}catch(e){toast("ARQUIVO INVÁLIDO")}})}
+function cnov(n){/* removido */}
+function cont(n){/* removido */}
+function orc(n){/* removido */}
+function gf(n){/* removido */}
+
+function pausaOk(){D.pausas=(D.pausas||0)+1;toast("+"+PTS.pausa+" · PAUSA SEM TELA. ISSO FIXA O BLOCO.");render()}
+function amanha(){D.amanha=true;toast("+"+PTS.amanha+" · AMANHÃ EXISTE");render()}
+
+let tm={fase:"foco",rest:(E.cfgBloco.foco||25)*60,run:false,id:null};
+function tmDraw(){const tot=(tm.fase==="foco"?(E.cfgBloco.foco||25):(E.cfgBloco.pausa||10))*60;$("tmTxt").textContent=String(Math.floor(tm.rest/60)).padStart(2,"0")+":"+String(tm.rest%60).padStart(2,"0");$("tmFase").textContent=tm.fase==="foco"?"FOCO":"DESCANSO · SEM CELULAR";$("arc").style.strokeDashoffset=603*(tm.rest/tot);$("tmBtn").textContent=tm.run?"PAUSAR":(tm.fase==="foco"?"COMEÇAR BLOCO":"COMEÇAR DESCANSO")}
+function tmToggle(){tm.run=!tm.run;if(tm.run){tm.id=setInterval(()=>{tm.rest--;if(tm.rest<=0){clearInterval(tm.id);tm.run=false;if(tm.fase==="foco"){D.blocos++;const _m=E.mundo||"avulso";D.blocosMundo=D.blocosMundo||{};D.blocosMundo[_m]=(D.blocosMundo[_m]||0)+1;const _p=ptsBloco(E.cfgBloco.foco);D.blocosPts=(D.blocosPts||0)+_p;toast("+"+_p+" · BLOCO DE "+E.cfgBloco.foco+" MIN. DESCANSA.");tm.fase="descanso";tm.rest=(E.cfgBloco.pausa||10)*60;try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}else{tm.fase="foco";tm.rest=(E.cfgBloco.foco||25)*60;toast("DESCANSOU. PRÓXIMO QUANDO QUISER.")}render()}tmDraw()},1000)}else clearInterval(tm.id);tmDraw()}
+function tmReset(){clearInterval(tm.id);tm={fase:"foco",rest:(E.cfgBloco.foco||25)*60,run:false,id:null};tmDraw()}
+
+function fechar(){D.nota=$("nota").value;const a=atencao(HOJE);
+  const th=E.tarefas.filter(deHoje);const ts=th.filter(feita).map(t=>"✓ "+t.t+(t.est!==""&&t.est!=null?` (prazo ${t.est}d, levou ${diasEntre(t.criada||t.data,t.feitaEm)}d)`:"")),nao=th.filter(t=>!feita(t)).map(t=>"· "+t.t);const adi=E.tarefas.filter(t=>t.motivos&&t.motivos.some(m=>m.d===HOJE.slice(8)+"/"+HOJE.slice(5,7))).map(t=>"→ adiada: "+t.t+" ("+t.motivos[t.motivos.length-1].m+")");
+  const r=[`FECHA O DIA ${HOJE}`,`pontos hoje ${ptsDia(D,HOJE)} · total ${ptsTotal()} · nível ${nivelDe(ptsTotal()).nome}`,`blocos ${D.blocos}${E.mundo&&D.blocos?" ("+(todosEstudos().find(x=>x.id===E.mundo)||{}).trilha+")":""} · pausas sem tela ${D.pausas||0} · treino ${(D.treino||[]).map(t=>typeof t==="string"?t:txtTreino(t).t).join(", ")||"não"} · amanhã ${D.amanha?"organizado":"não"}`,`atenção: ${a.liq} min que contam (${a.tot} brutos, ${a.trab} a trabalho) · ${a.n} entradas`,"",...ts,...nao,...adi,"",D.nota?"Nota: "+D.nota:""].join("\n");
+  $("resumo").textContent=r;save();navigator.clipboard&&navigator.clipboard.writeText(r).then(()=>toast("COPIADO. COLA PRO CLAUDE.")).catch(()=>toast("SELECIONA E COPIA ABAIXO."))}
+
+function moverTimer(destinoId){const t=document.getElementById("timerBox");const d=document.getElementById(destinoId);if(t&&d&&t.parentElement!==d)d.appendChild(t)}
+function blocoAvulso(){E.mundo=null;save();render();moverTimer("estudoCorpo");document.getElementById("timerBox").scrollIntoView({block:"center",behavior:"smooth"});toast("BLOCO AVULSO")}
+let mundoAberto=false;
+function abrirTrilha(id){const e=todosEstudos().find(x=>x.id===id);if(!e)return;E.mundo=id;save();const bl=blocosDoMundo(e.id),ult=e.sessoes[e.sessoes.length-1];$("trH2").textContent=e.trilha;const _ts=$("trilhaSub");if(_ts)_ts.textContent=e.area;
+  $("trCorpo").innerHTML=`<div class="tr-nums"><div><b>${e.sessoes.length}</b><small>SESSÕES</small></div><div><b>${bl}</b><small>BLOCOS</small></div><div><b>${ult?ult.d.slice(8,10)+"/"+ult.d.slice(5,7):"—"}</b><small>ÚLTIMA</small></div></div>
+  <div class="st" style="font-size:13px;color:var(--ink2)">${e.obra} · ${e.estado}</div>
+  <div class="sec">O FIO</div><div class="fio">${e.fio}</div>
+  <div class="row" style="justify-content:center"><button class="btn g" onclick="setTimeout(()=>$('timerBox').scrollIntoView({block:'center',behavior:'smooth'}),80)">COMEÇAR BLOCO NESTE MUNDO</button></div>
+  <div class="prox"><b>PRÓXIMA SESSÃO</b>${e.proximo}</div>
+  <div class="sec">SESSÕES</div>${e.sessoes.slice().reverse().map(x=>`<div class="sess"><div class="k">${x.d.slice(8,10)}/${x.d.slice(5,7)} · ${x.blocos} BLOCO${x.blocos===1?"":"S"}</div><div class="tr">${x.trecho}</div><div class="k" style="color:var(--ink3)">O QUE VOCÊ ENTENDEU</div><div class="resumo">${(x.resumo||"").split("\n").map(q=>`<p>${q}</p>`).join("")}</div>${(x.perguntas||[]).length?`<div class="k" style="color:var(--ink3)">O QUE VOCÊ PERGUNTOU</div><ul>${x.perguntas.map(a=>`<li>${a}</li>`).join("")}</ul>`:""}${(x.melhorar||[]).length?`<div class="k" style="color:var(--ink3)">PRA MELHORAR</div><ul>${x.melhorar.map(a=>`<li>${a}</li>`).join("")}</ul>`:""}</div>`).join("")||'<div class="vazio">Nenhuma sessão ainda.</div>'}
+  ${(()=>{const G=(e.glossario||[]).filter(g=>g.st!=="ok"),AP=e.aprendidas||[];return (G.length||AP.length)?`<div class="sec">PALAVRAS QUE VOLTAM <span style="color:var(--ink3);letter-spacing:.06em;text-transform:none">(só com IA)</span></div><div class="vazio" style="padding:0 0 8px">Você lê em voz alta pra IA e ela marca a palavra que travou. Elas ficam aqui até virarem suas.</div>${G.map(g=>`<div class="gloss"><b>${g.p}</b><span>${g.s}</span><i>${g.v?g.v+"× de novo":""}</i></div>`).join("")||'<div class="vazio">Nenhuma em treino agora.</div>'}<div class="vazio">${AP.length?`<b style="color:var(--gold)">${AP.length} já aprendidas</b>: ${AP.join(", ")}. `:""}A palavra sai daqui quando você usar ou definir certa sozinha. Glossário inteiro em ${e.pasta}README.md</div>`:""})()}`;
+  abrir("trilha");mundoAberto=true;setTimeout(()=>{moverTimer("trTimer");render()},40)}
+function abrir(g){mundoAberto=false;if(g==="estudo")setTimeout(()=>{moverTimer("estudoCorpo");render()},30);
+  document.querySelectorAll(".painel").forEach(p=>p.classList.toggle("on",p.dataset.g===g));document.body.style.overflow="hidden";document.querySelector(".painel.on").scrollTop=0;history.pushState({g},"")}
+function fecharP(){mundoAberto=false;if(precisaResumo()&&document.querySelector('.painel.on[data-g="trilha"],.painel.on[data-g="estudo"]')){toast("FALTA O RESUMO DE HOJE")}
+  document.querySelectorAll(".painel").forEach(p=>p.classList.remove("on"));document.body.style.overflow="";render()}
+window.addEventListener("popstate",()=>{document.querySelectorAll(".painel").forEach(p=>p.classList.remove("on"));document.body.style.overflow="";render()});
+
+if(DADOS.nota){$("notaDia").style.display="block";$("notaTxt").textContent=DADOS.nota}
+(function(){const V=DADOS.valores||{};const N={crp:"CRP",gf:"GF",treino:"Correr",pessoal:"Eu"};const L=Object.entries(V).filter(([k,v])=>v);$("valBox").style.display=L.length?"block":"none";$("valLista").innerHTML=L.length?L.map(([k,v])=>`<div><span class="d">${N[k]||k}</span> ${v}</div>`).join(""):`<div style="opacity:.75">Ainda vazio. Manda uma linha por áudio pro Claude: <b>por que a CRP importa pra você</b>, por que a GF, por que correr. O que aparece no corpo, não frase pronta. Fica aqui, no topo, como lembrete (Susan Wolf: sentido é gostar de algo que vale).</div>`;const vb=k=>{const v=V[k];return v?`<div class="neuro" style="border-color:rgba(255,31,169,.35)"><b>POR QUE ISSO IMPORTA (VOCÊ):</b> ${v}</div>`:""};const pt=document.querySelector('.painel[data-g="trabalho"] .corpo');if(pt)pt.insertAdjacentHTML("afterbegin",vb("crp")+vb("gf"));const pr=document.querySelector('.painel[data-g="treino"] .corpo');if(pr)pr.insertAdjacentHTML("afterbegin",vb("treino"))})();
+function renderAlarmes(){const ah=E.tarefas.filter(t=>!t.pulada&&!t.feitaEm&&t.data===HOJE&&(t.compromisso||/^\d\d:\d\d$/.test(t.hora||""))).sort((a,b)=>(a.hora||"99")>(b.hora||"99")?1:-1);
+  const box=document.getElementById("alarmes");if(!box)return;box.innerHTML="";
+  for(const t of ah){const el=document.createElement("div");el.className="alarme";
+    el.innerHTML=`<div class="liq"></div><div class="ct" id="ct-${t.id}"></div><div class="h">${/^\d\d:\d\d$/.test(t.hora||"")?t.hora:"HOJE"}</div><div class="t">${t.t}</div>${t.nota?`<div class="n">${t.nota}</div>`:""}`;
+    el.onclick=()=>abrirDet(t.id);box.appendChild(el)}
+  window._ah=ah;tickAlarmes()}
+function tickAlarmes(){const now=new Date();for(const t of (window._ah||[])){const e=document.getElementById("ct-"+t.id);if(!e)continue;
+  if(!/^\d\d:\d\d$/.test(t.hora||"")){e.textContent="SEM HORA";continue}
+  const[H,M]=t.hora.split(":").map(Number);const alvo=new Date(now);alvo.setHours(H,M,0,0);const dif=Math.round((alvo-now)/60000);
+  if(dif>0){e.textContent=dif>=60?`EM ${Math.floor(dif/60)}H${String(dif%60).padStart(2,"0")}`:`EM ${dif} MIN`;
+    if(dif<=60&&!t._av){t._av=true;notificar(t.t,`Começa em ${dif} min.`)}}
+  else e.textContent=dif>-90?"AGORA":"PASSOU"}}
+setInterval(tickAlarmes,30000);
+(function(){const r=E.tarefas.filter(t=>!t.pulada&&!t.feitaEm&&t.data===HOJE&&(t.tag==="Street"||/street|reuni|ligar|encontr|vem em casa/i.test(t.t)||t.hora&&/^\d/.test(t.hora))).sort((a,b)=>(a.hora||"99")>(b.hora||"99")?1:-1);if(r.length){$("ruaBox").style.display="block";$("ruaLista").innerHTML=r.map(t=>`<div><span class="d">${t.hora||"—"}</span> ${t.t}</div>`).join("")}})();
+const dt=new Date(HOJE+"T12:00:00");$("data").textContent=dt.toLocaleDateString("pt-BR",{weekday:"long",day:"2-digit",month:"long"});
+const fi=Math.floor(Date.now()/864e5)%FRASES.length;$("frase").textContent=FRASES[fi][0];$("fraseDe").textContent=FRASES[fi][1];
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+/* o Claude mexeu? recarrega sozinho quando for seguro */
+(function(){const MIN=DADOS.versao;if(!MIN)return;
+ const ocupada=()=>tm.run||document.querySelector(".sheet.on")||["INPUT","TEXTAREA"].includes((document.activeElement||{}).tagName);
+ async function ver(){try{const r=await fetch("versao.json?ts="+Date.now(),{cache:"no-store"});if(!r.ok)return;const j=await r.json();
+   if(j.v&&j.v!==MIN){if(ocupada())document.getElementById("novaver").style.display="block";else location.reload()}}catch(e){}}
+ setInterval(ver,12000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")ver()})})();
+tmDraw();render();
+(function(){const t0=Date.now();document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")return;const x=new Date();const h=x.getFullYear()+"-"+String(x.getMonth()+1).padStart(2,"0")+"-"+String(x.getDate()).padStart(2,"0");if(h!==HOJE||Date.now()-t0>30*60*1000){if(!tm.run)location.reload()}})})();
+</script>
+</body>
+</html>
